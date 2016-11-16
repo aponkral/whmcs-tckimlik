@@ -4,6 +4,7 @@ require_once('helpers.php');
 
 if (!defined("WHMCS")) {
     die("This file cannot be accessed directly");
+exit();
 }
 
 // Get the module config
@@ -111,3 +112,5 @@ add_hook('ClientAreaPage', 99, function($vars) use ($tc_field, $admin_user)
     }
     return $return_value;
 });
+
+?>

@@ -2,6 +2,7 @@
 
 if (!defined("WHMCS")) {
     die("This file cannot be accessed directly");
+exit();
 }
 
 require_once('helpers.php');
@@ -11,7 +12,7 @@ function tckimlik_config() {
     $configarray = array(
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü",
-    "version" => "1.0.1",
+    "version" => "1.0.2",
     "author" => "APONKRAL",
         "fields" => array(
             "tc_field" => array(
@@ -42,3 +43,32 @@ function tckimlik_config() {
     );
     return $configarray;
 }
+
+function tckimlik_output() {
+
+$getconfname = "TC Kimlik No Dogrulama";
+$getconfdescription = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
+$getconfversion = "1.0.2";
+$getconfauthor = "APONKRAL";
+
+require_once("versioncontrol.php");
+
+echo "<strong>Modül Adı : </strong>" . $getconfname . "<br />";
+echo "<strong>Modül Açıklaması : </strong>" . $getconfdescription . "<br />";
+echo "<strong>Modül Sürümü : </strong>" . $getconfversion . "<br />";
+echo "<strong>Modülü Yazan Kişi : </strong>" . $getconfauthor . "<br /><br />";
+
+if($tckimlikmoduluguncelmi === true) {
+// T.C. Kimlik numarası doğrulama eklentisi günceldir.
+echo "T.C. Kimlik No Doğrulama Modülü Güncel.";
+}
+
+elseif($tckimlikmoduluguncelmi === false) {
+// T.C. Kimlik numarası doğrulama eklentisi güncel değildir.
+echo "T.C. Kimlik No Doğrulama Modülü Güncel değil." . "<br />";
+echo "Modülü güncellemek istiyorsanız <a href=\"https://github.com/aponkral/whmcs-tckimlik/\" target=\"_blank\" title=\"WHMCS T.C. Kimlik Numarası doğrulama modülü\">GitHub'dan</a> Modülü indirerek WHMCS ana dizinininden <strong>modules/addons/</strong> klasörüne yükleyin.";
+
+}
+
+}
+?>
