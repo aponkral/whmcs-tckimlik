@@ -53,7 +53,7 @@ $getconfauthor = "APONKRAL";
 
 require_once("versioncontrol.php");
 
-echo "<div style="background: #eee; padding: 10px; font-size: 14px"><br /><br />";
+echo "<div style=\"background: #eee; padding: 10px; font-size: 14px\"><br /><br />";
 echo "<strong>Modül Adı : </strong>" . $getconfname . "<br /><br />";
 echo "<strong>Modül Açıklaması : </strong>" . $getconfdescription . "<br /><br />";
 echo "<strong>Modül Sürümü : </strong>" . $getconfversion . "<br /><br />";
