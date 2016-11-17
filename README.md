@@ -1,11 +1,12 @@
 
 # whmcs-tckimlik #
-WHMCS için T.C. Kimlik numarası doğrulama modülü
+WHMCS için Ücretsiz T.C. Kimlik numarası doğrulama modülü
 
 ## Minimum Gereksinimler ##
 
 - WHMCS >= 6.0
 - PHP >= 5.3.7
+- SOAP
 
 WHMCS 7.0 RC1 ve PHP 7.0 ile de testleri gerçekleştirilmiştir.
 
@@ -29,10 +30,26 @@ Modülün çalışması için 2 tane "custom field" oluşturmanız gerekiyor. Bu
 
 Kurulumu tamamlamak için WHMCS admin sayfanızdan "Setup -> Addon Modules" sayfasına gidip modülü etkinleştirin. Etkinleştirdikten sonra "Configure" butonuna tıklayarak TC Kimlik NO ve Doğum Yılı için oluşturduğunuz "Custom Field"ları seçmelisiniz.
 
+## Etiketler ##
+- WHMCS
+- Eklenti
+- Modül
+- WHMCS için T.C. kimlik numarası doğrulama Eklentisi
+- WHMCS için Ücretsiz T.C. Kimlik numarası doğrulama Eklentisi
+- WHMCS için T.C. Kimlik numarası doğrulama Modülü
+- WHMCS için Ücretsiz T.C. Kimlik numarası doğrulama Modülü
+- WHMCS için Modül
+- WHMCS için Eklenti
+- Ücretsiz
+- Tam Açık Kaynak Kodlu
+
+
+Bu modül tam açık kaynak kodlu olduğu için tüm geliştiriciler tarafından geliştirilebilir.
+
 ---
 
 # whmcs-tckimlik #
-A Turkish Identification Number validator addon for WHMCS
+A Turkish Identification Number validator free addon for WHMCS
 
 ## Summary ##
 This module offers an official way to validate Turkish Identification Numbers (TIN) for your Turkish users. Every Turkish citizen has a private and unique TIN (TC Kimlik Numarasi) and you can validate a TIN by consuming the SOAP services on https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?op=TCKimlikNoDogrula
@@ -40,6 +57,7 @@ This module offers an official way to validate Turkish Identification Numbers (T
 ## Minimum Requirements ##
 - WHMCS >= 6.0
 - PHP >= 5.3.7
+- SOAP
 
 Works with WHMCS 7.0 and PHP 7.0, too.
 
@@ -63,3 +81,19 @@ You can download the latest release and unzip it directly to your WHMCSroot/modu
 Module needs two Custom Fields to be created in WHMCS. One should hold the TNI data, the other should hold the user's birth year.
 
 To complete the installation, you should go to your WHMCS admin area and click "Activate" in your "Setup -> Addon Modules" page. Then click "Configure" and select the appropriate fields you created before.
+
+## Tags ##
+- WHMCS
+- Plugin
+- Module
+- Turkish Identification Number validator Plugin for WHMCS
+- Turkish Identification Number validator free Plugin for WHMCS
+- Turkish Identification Number validator Module for WHMCS
+- Turkish Identification Number validator free Module for WHMCS
+- Module for WHMCS
+- Plugin for WHMCS
+- Free
+- Full Open Source
+
+
+This module is fully open source can be developed by all developers.
