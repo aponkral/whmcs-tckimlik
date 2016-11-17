@@ -1,6 +1,6 @@
 <?php
 
-$tckimlikmodulsurum = "1.0.2";
+$tckimlikmodulsurum = $getconfversion;
 
 function tckimlik_guncellemevarmi($tckimlikmodulsurum) {
 $tckimliksite = "https://aponkral.net/tckimlik/version.txt";
