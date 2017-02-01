@@ -140,6 +140,24 @@ function strtouppertr($str)
 
 function validate_tc($tc, $year, $name, $surname)
 {
+
+function isTcKimlik($tc)  
+{  
+if(strlen($tc) < 11){ return false; }  
+if($tc[0] == '0'){ return false; }  
+$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
+$minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
+$mod = $minus % 10;  
+if($mod != $tc[9]){ return false; }  
+$all = '';  
+for($i = 0 ; $i < 10 ; $i++){ $all += $tc[$i]; }  
+if($all % 10 != $tc[10]){ return false; }  
+  
+return true;  
+}
+
+if(isTcKimlik($tc)) {
+
     $error = [];
 
     // Convert name and surname to uppercase and year to an int value
@@ -174,6 +192,12 @@ $hata_mesaji = "T.C. Kimlik Numaranız girmiş olduğunuz bilgiler ile uyuşmama
     }
 
     return $error;
+} else {
+$hata_mesaji = "T.C. Kimlik Numaranız T.C. Kimlik Numarası standartlarına uymamaktadır.";
+$error[] = $hata_mesaji;
+return $error;
+}
+
 }
 
 ?>
