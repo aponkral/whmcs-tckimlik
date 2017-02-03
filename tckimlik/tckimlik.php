@@ -12,7 +12,7 @@ function tckimlik_config() {
     $configarray = array(
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü",
-    "version" => "1.0.4",
+    "version" => "1.0.5",
     "author" => "APONKRAL",
         "fields" => array(
             "tc_field" => array(
@@ -48,7 +48,7 @@ function tckimlik_output() {
 
 $getconfname = "TC Kimlik No Dogrulama";
 $getconfdescription = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
-$getconfversion = "1.0.4";
+$getconfversion = "1.0.5";
 $getconfauthor = "APONKRAL";
 
 require_once("versioncontrol.php");

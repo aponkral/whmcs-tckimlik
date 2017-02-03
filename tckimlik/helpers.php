@@ -140,6 +140,28 @@ function strtouppertr($str)
 
 function validate_tc($tc, $year, $name, $surname)
 {
+	
+	if(filter_var(
+	$tc,
+	FILTER_VALIDATE_INT,
+	array(
+	'options' => array(
+	'min_range' => 10000000000,
+	'max_range' => 99999999999,
+	'default' => FALSE
+	)
+	)
+	) == $tc && filter_var(
+	$year,
+	FILTER_VALIDATE_INT,
+	array(
+	'options' => array(
+	'min_range' => 1900,
+	'max_range' => date("Y"),
+	'default' => FALSE
+	)
+	)
+	) == $year) {
 
 function isTcKimlik($tc)  
 {  
@@ -194,6 +216,12 @@ $hata_mesaji = "T.C. Kimlik Numaranız girmiş olduğunuz bilgiler ile uyuşmama
     return $error;
 } else {
 $hata_mesaji = "T.C. Kimlik Numaranız T.C. Kimlik Numarası standartlarına uymamaktadır.";
+$error[] = $hata_mesaji;
+return $error;
+}
+
+} else {
+$hata_mesaji = "T.C. Kimlik Numaranız veya Doğum Yılınız standartlara uymamaktadır.";
 $error[] = $hata_mesaji;
 return $error;
 }
