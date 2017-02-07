@@ -13,8 +13,9 @@ $tc_field = $conf["tc_field"];
 $birthyear_field = $conf["birthyear_field"];
 $country_check = $conf["only_turkish"];
 $admin_user = $conf["whmcs_admin_user"];
+$error_message = $conf["error_message"];
 
-add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $country_check)
+add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $country_check, $error_message)
 {
     if ($_SERVER["SCRIPT_NAME"] == '/creditcard.php')
     {
@@ -48,8 +49,8 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
             return $error;
         }
 
-        $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"]);
-        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"]), $validation, $validationn);
+        $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message);
+        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message), $validation, $validationn);
 
         if ($validation !== true)
         {

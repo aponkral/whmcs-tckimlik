@@ -138,7 +138,7 @@ function strtouppertr($str)
  * @return boolean
  */
 
-function validate_tc($tc, $year, $name, $surname)
+function validate_tc($tc, $year, $name, $surname, $error_message)
 {
 	
 	if(filter_var(
@@ -165,7 +165,7 @@ function validate_tc($tc, $year, $name, $surname)
 
 function isTcKimlik($tc)  
 {  
-if(strlen($tc) < 11){ return false; }  
+if(strlen($tc) < 11 || strlen($tc) > 11){ return false; }  
 if($tc[0] == '0'){ return false; }  
 $plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
 $minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
@@ -179,7 +179,8 @@ return true;
 }
 
 if(isTcKimlik($tc)) {
-
+	
+	$curl = curl_init();
     $error = [];
 
     // Convert name and surname to uppercase and year to an int value
@@ -187,24 +188,47 @@ if(isTcKimlik($tc)) {
     $surname = strtouppertr($surname);
     $year = intval($year);
 
-    	$veriler = array('TCKimlikNo' => $tc, 'Ad' => $name, 'Soyad' => $surname, 'DogumYili' => $year);
-			$baglan = new SoapClient('https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL');
-			$response = $baglan->TCKimlikNoDogrula($veriler);
-			
-			$result=$response->TCKimlikNoDogrulaResult;
+    	$request = '<?xml version="1.0" encoding="utf-8"?>
+<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+    <soap12:Body>
+        <TCKimlikNoDogrula xmlns="http://tckimlik.nvi.gov.tr/WS">
+            <TCKimlikNo>' . $tc . '</TCKimlikNo>
+            <Ad>' . $name . '</Ad>
+            <Soyad>' . $surname . '</Soyad>
+            <DogumYili>' . $year . '</DogumYili>
+        </TCKimlikNoDogrula>
+    </soap12:Body>
+</soap12:Envelope>';
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => "https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx",
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 10,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "POST",
+      CURLOPT_POSTFIELDS => $request,
+      CURLOPT_HTTPHEADER => array(
+        "cache-control: no-cache",
+        "content-type: application/soap+xml; charset=utf-8",
+      ),
+    ));
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
 
     if ($response)
     {
 
-$hata_mesaji = "T.C. Kimlik Numaranız girmiş olduğunuz bilgiler ile uyuşmamaktadır.";
+        preg_match('#<TCKimlikNoDogrulaResult>(.*?)</TCKimlikNoDogrulaResult>#', $response, $result);
         
-        if ($result == true)
+        if ($result[1] == "true")
         {
             return true;
-        } elseif ($result == false) {
-            $error[] = $hata_mesaji;
+        } elseif ($result[1] == "false") {
+            $error[] = $error_message;
         } else {
-            $error[] = $hata_mesaji;
+            $error[] = $error_message;
         }
     }
 
@@ -221,7 +245,7 @@ return $error;
 }
 
 } else {
-$hata_mesaji = "T.C. Kimlik Numaranız veya Doğum Yılınız standartlara uymamaktadır.";
+$hata_mesaji = "T.C. Kimlik Numaranız veya Doğum Yılınız geçerli bir sayı değildir.";
 $error[] = $hata_mesaji;
 return $error;
 }

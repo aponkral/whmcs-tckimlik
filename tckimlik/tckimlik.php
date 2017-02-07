@@ -9,11 +9,19 @@ require_once('helpers.php');
 
 function tckimlik_config() {
     $db_field_names = str_putcsv(get_custom_fields());
+    $getconfversion = "1.0.6";
+    require_once("versioncontrol.php");
+    if($tckimlikmoduluguncelmi === false) {
+        $version = $getconfversion . '<br /><text style="color:#FFAA11">Yeni bir sürüm mevcut!</text>';
+    } else {
+    	$version = $getconfversion;
+    }
     $configarray = array(
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü",
-    "version" => "1.0.5",
+    "version" => $version,
     "author" => "APONKRAL",
+    "language" => "turkish",
         "fields" => array(
             "tc_field" => array(
                 "FriendlyName" => "TC Kimlik Özel Alanı",
@@ -39,6 +47,13 @@ function tckimlik_config() {
                 "Size" => 25,
                 "Description" => "WHMCS Admin kullanıcı adı (şifreleme için kullanılır)",
             ),
+            "error_message" => array(
+                "FriendlyName" => "Hata Mesajı",
+                "Type" => "text",
+                "Size" => 25,
+                "Description" => "T.C. Kimlik Numarası uyuşmadığı takdirde müşteriye gösterilecek hata yazısı.",
+                "Default" => "T.C. Kimlik Numaranız girmiş olduğunuz bilgiler ile uyuşmamaktadır.",
+            ),
         )
     );
     return $configarray;
@@ -48,7 +63,7 @@ function tckimlik_output() {
 
 $getconfname = "TC Kimlik No Dogrulama";
 $getconfdescription = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
-$getconfversion = "1.0.5";
+$getconfversion = "1.0.6";
 $getconfauthor = "APONKRAL";
 
 require_once("versioncontrol.php");
