@@ -64,9 +64,10 @@ add_hook('CustomFieldSave', 1, function($vars) use ($tc_field, $admin_user)
     //Check that the fieldid is one you wish to override
     if ($vars['fieldid'] == $tc_field)
     {
-        $str["password2"] = $vars["value"];
-        $command = "encryptpassword";
-        $result = localAPI($command, $str, $admin_user);
+        #$str["password2"] = $vars["value"];
+        #$command = "encryptpassword";
+        #$result = localAPI($command, $str, $admin_user);
+        $result["password"] = $vars["value"];
         return array('value' => $result["password"]);
     }
     return array('value' => $vars["value"]);
@@ -77,9 +78,10 @@ add_hook('CustomFieldLoad', 1, function($vars) use ($tc_field, $admin_user)
     //Check that the fieldid is one you wish to override
     if ($vars['fieldid'] == $tc_field)
     {
-        $str["password2"] = $vars["value"];
-        $command = "decryptpassword";
-        $result = localAPI($command, $str, $admin_user);
+        #$str["password2"] = $vars["value"];
+        #$command = "decryptpassword";
+        #$result = localAPI($command, $str, $admin_user);
+        $result["password"] = $vars["value"];
         return array('value' => $result["password"]);
     }
     return array('value' => $vars["value"]);
@@ -96,9 +98,10 @@ add_hook('ClientAreaPage', 99, function($vars) use ($tc_field, $admin_user)
     foreach ($vars["customfields"] as $key => $customfield) {
         if ($customfield["id"] == $tc_field)
         {
-            $str["password2"] = $customfield["value"];
-            $command = "decryptpassword";
-            $result = localAPI($command, $str, $admin_user);
+            #$str["password2"] = $customfield["value"];
+            #$command = "decryptpassword";
+            #$result = localAPI($command, $str, $admin_user);
+            $result["password"] = $customfield["value"];
             if ($result["password"] != "")
             {
                 $return_value = array("customfields" => (array($key => array("id" => $tc_field,
