@@ -9,7 +9,7 @@ require_once('helpers.php');
 
 function tckimlik_config() {
     $db_field_names = str_putcsv(get_custom_fields());
-    $getconfversion = "1.0.7";
+    $getconfversion = "1.0.8";
     require_once("versioncontrol.php");
     if($tckimlikmoduluguncelmi === false) {
         $version = $getconfversion . '<br /><text style="color:#FFAA11">Yeni bir sürüm mevcut!</text>';
@@ -63,7 +63,7 @@ function tckimlik_output() {
 
 $getconfname = "TC Kimlik No Dogrulama";
 $getconfdescription = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
-$getconfversion = "1.0.7";
+$getconfversion = "1.0.8";
 $getconfauthor = "APONKRAL";
 
 require_once("versioncontrol.php");

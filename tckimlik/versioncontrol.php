@@ -3,7 +3,7 @@
 $tckimlikmodulsurum = $getconfversion;
 
 function tckimlik_guncellemevarmi($tckimlikmodulsurum) {
-$tckimliksite = "https://aponkral.net/tckimlik/version.txt";
+$tckimliksite = "https://cdn.aponkral.net/tckimlik/version.txt";
 
 $ch = curl_init(); 
 
