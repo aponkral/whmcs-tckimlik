@@ -7,9 +7,17 @@ WHMCS için Ücretsiz T.C. Kimlik numarası doğrulama modülü
 - WHMCS >= 6.0
 - PHP >= 5.3.7
 
-WHMCS 7.0 RC1 ve PHP 7.0 ile de testleri gerçekleştirilmiştir.
+WHMCS 7.4.2 ve PHP 7.0 ile de testleri gerçekleştirilmiştir.
 
-WHMCS'nin minimum gereksinimlerini görmek için http://docs.whmcs.com/System_Requirements adresine göz atabilirsiniz.
+WHMCS'nin minimum gereksinimlerini görmek için https://docs.whmcs.com/System_Requirements adresine göz atabilirsiniz.
+
+## Özellikler ##
+- Açık kaynak
+- T.C. Kimlik Numarası doğrulama
+- Sadece Türkiye için doğrulama (opsiyonel)
+- Benzersiz Kimlik (opsiyonel)
+- Özelleştirilebilir bilgi mesajları
+- Direkt nvi.gov.tr API ile doğrulama
 
 ## Kurulum ##
 Projeyi herhangi bir yere clonelayabilir ya da GitHub üzerinden son sürümü indirebilirsiniz. Sürümler için [releases](https://github.com/aponkral/whmcs-tckimlik/releases) sayfasına göz atın.
@@ -30,6 +38,7 @@ Modülün çalışması için 2 tane "custom field" oluşturmanız gerekiyor. Bu
 Kurulumu tamamlamak için WHMCS admin sayfanızdan "Setup -> Addon Modules" sayfasına gidip modülü etkinleştirin. Etkinleştirdikten sonra "Configure" butonuna tıklayarak TC Kimlik NO ve Doğum Yılı için oluşturduğunuz "Custom Field"ları seçmelisiniz.
 
 ## Etiketler ##
+- Tam Açık Kaynak Kodlu
 - WHMCS
 - Eklenti
 - Modül
@@ -40,7 +49,10 @@ Kurulumu tamamlamak için WHMCS admin sayfanızdan "Setup -> Addon Modules" sayf
 - WHMCS için Modül
 - WHMCS için Eklenti
 - Ücretsiz
-- Tam Açık Kaynak Kodlu
+- Aynı T.C. Kimlik Numarası ile kayıt olamama
+- Tek T.C. Kimlik Numarası ile kayıt olma
+- Benzersiz T.C. Kimlik Numarası ile kayıt olma
+- Özelleştirilebilen bilgi mesajları
 
 
 Bu modül tam açık kaynak kodlu olduğu için tüm geliştiriciler tarafından geliştirilebilir.
@@ -51,16 +63,24 @@ Bu modül tam açık kaynak kodlu olduğu için tüm geliştiriciler tarafından
 A Turkish Identification Number validator free addon for WHMCS
 
 ## Summary ##
-This module offers an official way to validate Turkish Identification Numbers (TIN) for your Turkish users. Every Turkish citizen has a private and unique TIN (TC Kimlik Numarasi) and you can validate a TIN by consuming the SOAP services on https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?op=TCKimlikNoDogrula
+This module offers an official way to validate Turkish Identification Numbers (TIN) for your Turkish users. Every Turkish citizen has a private and unique TIN (Turkish Identification Numbers) and you can validate a TIN by consuming the SOAP services on https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?op=TCKimlikNoDogrula
 
 ## Minimum Requirements ##
 - WHMCS >= 6.0
 - PHP >= 5.3.7
 
-Works with WHMCS 7.0 and PHP 7.0, too.
+Works with WHMCS 7.4.2 and PHP 7.0, too.
 
 For the latest WHMCS minimum system requirements, please refer to
-http://docs.whmcs.com/System_Requirements
+https://docs.whmcs.com/System_Requirements
+
+## Features ##
+- Open source
+- Turkish Identity Number verification
+- Only authentication for Turkey (optional)
+- Unique Identity (optional)
+- Customizable information messages
+- Direct ​​Verification via nvi.gov.tr API
 
 ## Installation ##
 You can install this module by cloning the repo or downloading the latest release from GitHub. See the [releases](https://github.com/aponkral/whmcs-tckimlik/releases) page.
@@ -81,6 +101,7 @@ Module needs two Custom Fields to be created in WHMCS. One should hold the TNI d
 To complete the installation, you should go to your WHMCS admin area and click "Activate" in your "Setup -> Addon Modules" page. Then click "Configure" and select the appropriate fields you created before.
 
 ## Tags ##
+- Full Open Source
 - WHMCS
 - Plugin
 - Module
@@ -91,7 +112,10 @@ To complete the installation, you should go to your WHMCS admin area and click "
 - Module for WHMCS
 - Plugin for WHMCS
 - Free
-- Full Open Source
+- Unable to register with the same Turkish ID
+- Registering with a Single Turkish Identity Number
+- Register with a unique Turkish Identity Number
+- Customizable information messages
 
 
 This module is fully open source can be developed by all developers.
