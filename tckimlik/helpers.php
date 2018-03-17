@@ -6,7 +6,7 @@ exit();
 }
 
 // use WHMCS (Laravel) db functions
-use Illuminate\Database\Capsule\Manager as Capsule;
+use WHMCS\Database\Capsule;
 
 /**
  *
@@ -27,10 +27,11 @@ function find_user_details($email)
 {
     $retArr = [];
     $details = Capsule::table('tblclients')
-                ->select('firstname', 'lastname')
+                ->select('id', 'firstname', 'lastname')
                 ->where('email', $email)
                 ->first();
 
+	$retArr["id"] = $details->id;
     $retArr["firstname"] = $details->firstname;
     $retArr["lastname"] = $details->lastname;
 

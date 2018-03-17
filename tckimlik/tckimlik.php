@@ -9,17 +9,10 @@ require_once('helpers.php');
 
 function tckimlik_config() {
     $db_field_names = str_putcsv(get_custom_fields());
-    $getconfversion = "1.0.9";
-    require_once("versioncontrol.php");
-    if($tckimlikmoduluguncelmi === false) {
-        $version = $getconfversion . '<br /><text style="color:#FFAA11">Yeni bir sürüm mevcut!</text>';
-    } else {
-    	$version = $getconfversion;
-    }
     $configarray = array(
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü",
-    "version" => $version,
+    "version" => "1.1.0",
     "author" => "APONKRAL",
     "language" => "turkish",
         "fields" => array(
@@ -41,11 +34,18 @@ function tckimlik_config() {
                 "Size" => "25",
                 "Description" => "Yalnızca Türkiye adresli kullanıcılar için geçerli olsun",
             ),
-            "whmcs_admin_user" => array(
-                "FriendlyName" => "Admin kullanıcı adı",
+			"unique_identity" => array(
+                "FriendlyName" => "Benzersiz Kimlik",
+                "Type" => "yesno",
+                "Size" => "25",
+                "Description" => "Bir T.C. Kimlik Numarası ile bir kere kayıt olunabilir.",
+            ),
+			"unique_identity_message" => array(
+                "FriendlyName" => "Benzersiz Kimlik Mesajı",
                 "Type" => "text",
                 "Size" => 25,
-                "Description" => "WHMCS Admin kullanıcı adı (şifreleme için kullanılır)",
+                "Description" => "Başka kullanıcıya ait olan bir T.C. Kimlik Numarası ile yeni kaydı ve profil güncellemeyi engeller.",
+                "Default" => "Bu T.C. Kimlik Numarası ile kayıtlı bir kullanıcı var.",
             ),
             "error_message" => array(
                 "FriendlyName" => "Hata Mesajı",
@@ -63,16 +63,16 @@ function tckimlik_output() {
 
 $getconfname = "TC Kimlik No Dogrulama";
 $getconfdescription = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
-$getconfversion = "1.0.9";
+$getconfversion = "1.1.0";
 $getconfauthor = "APONKRAL";
 
 require_once("versioncontrol.php");
 
 echo "<div style=\"background: #eee; padding: 10px; font-size: 14px\"><br /><br />";
-echo "<strong>Modül Adı : </strong>" . $getconfname . "<br /><br />";
-echo "<strong>Modül Açıklaması : </strong>" . $getconfdescription . "<br /><br />";
-echo "<strong>Modül Sürümü : </strong>" . $getconfversion . "<br /><br />";
-echo "<strong>Modülü Yazan Kişi : </strong>" . $getconfauthor . "<br /><br /><br />";
+echo "<strong>Modül adı : </strong>" . $getconfname . "<br /><br />";
+echo "<strong>Modül açıklaması : </strong>" . $getconfdescription . "<br /><br />";
+echo "<strong>Modül sürümü : </strong>" . $getconfversion . "<br /><br />";
+echo "<strong>Modülü geliştiren : </strong>" . $getconfauthor . "<br /><br /><br />";
 
 ### Guncelleme Kontrol Başladı ###
 

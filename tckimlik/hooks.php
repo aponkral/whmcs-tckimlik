@@ -12,10 +12,11 @@ $conf = get_module_conf();
 $tc_field = $conf["tc_field"];
 $birthyear_field = $conf["birthyear_field"];
 $country_check = $conf["only_turkish"];
-$admin_user = $conf["whmcs_admin_user"];
+$unique_identity = $conf["unique_identity"];
+$unique_identity_message = $conf["unique_identity_message"];
 $error_message = $conf["error_message"];
 
-add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $country_check, $error_message)
+add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $country_check, $unique_identity, $unique_identity_message, $error_message)
 {
     if ($_SERVER["SCRIPT_NAME"] == '/creditcard.php')
     {
@@ -25,6 +26,11 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
     if (isset($vars["save"]))
     {
         $user_details = find_user_details($vars["email"]);
+        
+        if (!isset($vars["userid"]))
+        {
+            $vars["userid"] = $user_details["id"];
+        }
 
         if (!isset($vars["firstname"]))
         {
@@ -41,14 +47,36 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
     $form_tckimlik = $vars["customfield"][$tc_field];
     $form_birthyear = $vars["customfield"][$birthyear_field];
 
-    if (($country_check == "on" && $vars["country"] == "TR") || $country_check == "")
+    if ($country_check == "on" && $vars["country"] == "TR")
     {
         if (empty($form_tckimlik) || empty($form_birthyear))
         {
             $error[] = "TC Kimlik Numaranız veya doğum tarihi alanını doldurmadınız.";
             return $error;
         }
+		
+		if($unique_identity == "on")
+		{
+		
+		function validate_unique_identity($user_id, $tc_field, $form_tckimlik)
+		{
+			if(!isset($user_id) || empty($user_id) || !is_int($user_id))
+			$user_id = 0;
+			
+			$sql_ui_count = "select COUNT(*) as total from `tblcustomfieldsvalues` where not relid=" . $user_id . " AND fieldid=" . $tc_field . " AND value='" . $form_tckimlik . "'";
+			$sql_ui_count_query = mysql_query($sql_ui_count);
+		
+			if(mysql_fetch_assoc($sql_ui_count_query)['total'] == 0)
+			return true;
+			else
+			return false;
+		}
+		
+		$user_id = $vars['userid'];
 
+		if(validate_unique_identity($user_id, $tc_field, $form_tckimlik) == true)
+		{
+		
         $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message);
         logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message), $validation, $validationn);
 
@@ -56,65 +84,24 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
         {
             return $validation;
         }
-    }
-});
+		}
+		else
+		{
+			return $unique_identity_message;
+		}
+		}
+		else
+		{
+			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message);
+        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message), $validation, $validationn);
 
-add_hook('CustomFieldSave', 1, function($vars) use ($tc_field, $admin_user)
-{
-    //Check that the fieldid is one you wish to override
-    if ($vars['fieldid'] == $tc_field)
-    {
-        #$str["password2"] = $vars["value"];
-        #$command = "encryptpassword";
-        #$result = localAPI($command, $str, $admin_user);
-        $result["password"] = $vars["value"];
-        return array('value' => $result["password"]);
+			if ($validation !== true)
+			{
+            return $validation;
+			}
+		}
+		
     }
-    return array('value' => $vars["value"]);
-});
-
-add_hook('CustomFieldLoad', 1, function($vars) use ($tc_field, $admin_user)
-{
-    //Check that the fieldid is one you wish to override
-    if ($vars['fieldid'] == $tc_field)
-    {
-        #$str["password2"] = $vars["value"];
-        #$command = "decryptpassword";
-        #$result = localAPI($command, $str, $admin_user);
-        $result["password"] = $vars["value"];
-        return array('value' => $result["password"]);
-    }
-    return array('value' => $vars["value"]);
-});
-
-add_hook('ClientAreaPage', 99, function($vars) use ($tc_field, $admin_user)
-{
-    if ($vars["SCRIPT_NAME"] != "/viewinvoice.php")
-    {
-        return true;
-    }
-    $return_value = array();
-    //Check if the fieldid is one you wish to override
-    foreach ($vars["customfields"] as $key => $customfield) {
-        if ($customfield["id"] == $tc_field)
-        {
-            #$str["password2"] = $customfield["value"];
-            #$command = "decryptpassword";
-            #$result = localAPI($command, $str, $admin_user);
-            $result["password"] = $customfield["value"];
-            if ($result["password"] != "")
-            {
-                $return_value = array("customfields" => (array($key => array("id" => $tc_field,
-                                        "fieldname" => $customfield["fieldname"],
-                                        "value" => $result["password"]))));
-            } else {
-                array_push($return_value, array("customfields" => array($customfield)));
-            }
-        } else {
-            array_push($return_value, array("customfields" => array($customfield)));
-        }
-    }
-    return $return_value;
 });
 
 ?>
