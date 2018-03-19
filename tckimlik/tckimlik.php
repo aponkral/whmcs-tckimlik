@@ -1,4 +1,37 @@
 <?php
+// *************************************************************************
+// *                                                                       *
+// * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
+// * Copyright (c) APONKRAL. All Rights Reserved,                         *
+// * Version: 1.1.1 (1.1.1-release.1)                                      *
+// * BuildId: 20180318.001                                                  *
+// * Build Date: 18 Mar 2018                                               *
+// *                                                                       *
+// *************************************************************************
+// *                                                                       *
+// * Email: bilgi[@]aponkral.net                                                 *
+// * Website: https://aponkral.net                                         *
+// *                                                                       *
+// *************************************************************************
+// *                                                                       *
+// * This software is furnished under a license and may be used and copied *
+// * only  in  accordance  with  the  terms  of such  license and with the *
+// * inclusion of the above copyright notice.  This software  or any other *
+// * copies thereof may not be provided or otherwise made available to any *
+// * other person.  No title to and  ownership of the  software is  hereby *
+// * transferred.                                                          *
+// *                                                                       *
+// * You may not reverse  engineer, decompile, defeat  license  encryption *
+// * mechanisms, or  disassemble this software product or software product *
+// * license.  APONKRAL may terminate this license if you don't *
+// * comply with any of the terms and conditions set forth in our end user *
+// * license agreement (EULA).  In such event,  licensee  agrees to return *
+// * licensor  or destroy  all copies of software  upon termination of the *
+// * license.                                                              *
+// *                                                                       *
+// * Please see the EULA file for the full End User License Agreement.     *
+// *                                                                       *
+// *************************************************************************
 
 if (!defined("WHMCS")) {
     die("This file cannot be accessed directly");
@@ -12,7 +45,7 @@ function tckimlik_config() {
     $configarray = array(
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü",
-    "version" => "1.1.0",
+    "version" => "1.1.1",
     "author" => "APONKRAL",
     "language" => "turkish",
         "fields" => array(
@@ -63,10 +96,19 @@ function tckimlik_output() {
 
 $getconfname = "TC Kimlik No Dogrulama";
 $getconfdescription = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
-$getconfversion = "1.1.0";
+$getconfversion = "1.1.1";
 $getconfauthor = "APONKRAL";
 
-require_once("versioncontrol.php");
+function tckimlik_update_check($getconfversion) {
+$tckimlik_latest_version = file_get_contents('https://raw.githubusercontent.com/aponkral/whmcs-tckimlik/master/version.txt');
+
+if($getconfversion == $tckimlik_latest_version)
+return true;
+else
+return false;
+}
+
+$is_tckimlik_module_up_to_date = tckimlik_update_check($getconfversion);
 
 echo "<div style=\"background: #eee; padding: 10px; font-size: 14px\"><br /><br />";
 echo "<strong>Modül adı : </strong>" . $getconfname . "<br /><br />";
@@ -76,12 +118,12 @@ echo "<strong>Modülü geliştiren : </strong>" . $getconfauthor . "<br /><br />
 
 ### Guncelleme Kontrol Başladı ###
 
-if($tckimlikmoduluguncelmi === true) {
+if($is_tckimlik_module_up_to_date === true) {
 // T.C. Kimlik numarası doğrulama eklentisi günceldir.
 echo "T.C. Kimlik No Doğrulama Modülü Güncel.";
 }
 
-elseif($tckimlikmoduluguncelmi === false) {
+elseif($is_tckimlik_module_up_to_date === false) {
 // T.C. Kimlik numarası doğrulama eklentisi güncel değildir.
 echo "T.C. Kimlik No Doğrulama Modülü Güncel değil." . "<br />";
 echo "Modülü güncellemek istiyorsanız <a href=\"https://github.com/aponkral/whmcs-tckimlik/\" target=\"_blank\" title=\"WHMCS T.C. Kimlik Numarası doğrulama modülü\">GitHub'dan</a> Modülü indirerek WHMCS ana dizinininden <strong>modules/addons/</strong> klasörüne yükleyin.";
