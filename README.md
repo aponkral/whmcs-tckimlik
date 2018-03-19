@@ -55,7 +55,7 @@ Kurulumu tamamlamak için WHMCS admin sayfanızdan "Setup -> Addon Modules" sayf
 - Özelleştirilebilen bilgi mesajları
 
 
-Bu modül tam açık kaynak kodlu olduğu için tüm geliştiriciler tarafından geliştirilebilir.
+Bu modül [APONKRAL Apps](https://aponkral.net/apps/) tarafından tam açık kaynak kodlu olarak yayınlandığı için tüm geliştiriciler tarafından geliştirilebilir.
 
 ---
 
@@ -118,4 +118,4 @@ To complete the installation, you should go to your WHMCS admin area and click "
 - Customizable information messages
 
 
-This module is fully open source can be developed by all developers.
+This module can be developed by all developers as [APONKRAL Apps](https://aponkral.net/apps/) is released as full open source code.
