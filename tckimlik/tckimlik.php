@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.1 (1.1.1-release.1)                                      *
-// * BuildId: 20180318.001                                                  *
-// * Build Date: 18 Mar 2018                                               *
+// * Version: 1.1.2 (1.1.2-release.1)                                      *
+// * BuildId: 20180407.001                                                  *
+// * Build Date: 07 Apr 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -44,8 +44,8 @@ function tckimlik_config() {
     $db_field_names = str_putcsv(get_custom_fields());
     $configarray = array(
     "name" => "TC Kimlik No Dogrulama",
-    "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü",
-    "version" => "1.1.1",
+    "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
+    "version" => "1.1.2",
     "author" => "APONKRAL",
     "language" => "turkish",
         "fields" => array(
@@ -92,44 +92,60 @@ function tckimlik_config() {
     return $configarray;
 }
 
-function tckimlik_output() {
+function tckimlik_activate() {
 
-$getconfname = "TC Kimlik No Dogrulama";
-$getconfdescription = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
-$getconfversion = "1.1.1";
-$getconfauthor = "APONKRAL";
+	return array('status' => 'success', 'description' => 'TC Kimlik No Dogrulama modülü başarıyla etkinleştirildi.');
 
-function tckimlik_update_check($getconfversion) {
-$tckimlik_latest_version = file_get_contents('https://raw.githubusercontent.com/aponkral/whmcs-tckimlik/master/version.txt');
+}
 
-if($getconfversion == $tckimlik_latest_version)
-return true;
+function tckimlik_deactivate() {
+
+    return array('status' => 'success', 'description' => 'TC Kimlik No Dogrulama modülü başarıyla pasifleştirildi.');
+
+}
+
+function tckimlik_output($vars) {
+	
+    $version = $vars['version'];
+
+$module_name = "TC Kimlik No Dogrulama";
+$module_description = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
+$module_author = "<a href=\"https://aponkral.net/\" target=\"_blank\" title=\"APONKRAL Blog\" style=\"color: #2196F3;\">APONKRAL</a>";
+
+function update_check($version) {
+$currentversion = trim(file_get_contents('https://raw.githubusercontent.com/aponkral/whmcs-tckimlik/master/version.txt'));
+
+if($version == $currentversion)
+return "<p style=\"color: #4CAF50;\">T.C. Kimlik No Doğrulama modülü güncel.</p>";
 else
-return false;
+return "<p style=\"color: #F44336;\">T.C. Kimlik No Doğrulama modülü güncel değil! (<i style=\"color: #607D8B;\">Güncel sürüm: " . $currentversion . "</i>)</p><p style=\"color: #616161;\">Modülü güncellemek istiyorsanız <a href=\"https://github.com/aponkral/whmcs-tckimlik\" target=\"_blank\" title=\"WHMCS T.C. Kimlik Numarası doğrulama modülü\" style=\"color: #2196F3;\">GitHub'dan</a> Modülü indirerek WHMCS ana dizinininden <strong>modules/addons/</strong> klasörüne yükleyin.</p><p style=\"color: #424242;\">Lütfen dosyaları güncelledikten sonra bu sayfaya tekrar bakın.</p>";
 }
 
-$is_tckimlik_module_up_to_date = tckimlik_update_check($getconfversion);
+$is_module_up_to_date = update_check($version);
 
-echo "<div style=\"background: #eee; padding: 10px; font-size: 14px\"><br /><br />";
-echo "<strong>Modül adı : </strong>" . $getconfname . "<br /><br />";
-echo "<strong>Modül açıklaması : </strong>" . $getconfdescription . "<br /><br />";
-echo "<strong>Modül sürümü : </strong>" . $getconfversion . "<br /><br />";
-echo "<strong>Modülü geliştiren : </strong>" . $getconfauthor . "<br /><br /><br />";
-
-### Guncelleme Kontrol Başladı ###
-
-if($is_tckimlik_module_up_to_date === true) {
-// T.C. Kimlik numarası doğrulama eklentisi günceldir.
-echo "T.C. Kimlik No Doğrulama Modülü Güncel.";
-}
-
-elseif($is_tckimlik_module_up_to_date === false) {
-// T.C. Kimlik numarası doğrulama eklentisi güncel değildir.
-echo "T.C. Kimlik No Doğrulama Modülü Güncel değil." . "<br />";
-echo "Modülü güncellemek istiyorsanız <a href=\"https://github.com/aponkral/whmcs-tckimlik/\" target=\"_blank\" title=\"WHMCS T.C. Kimlik Numarası doğrulama modülü\">GitHub'dan</a> Modülü indirerek WHMCS ana dizinininden <strong>modules/addons/</strong> klasörüne yükleyin.";
-}
-
-### Guncelleme Kontrol Bitti ###
+echo "<table class=\"table table-bordered\">
+				<tbody>
+					<tr>
+						<td><b style=\"color: #212121;\">Modül adı</b></td>
+						<td>" . $module_name . "</td>
+					</tr>
+					<tr>
+						<td><b style=\"color: #212121;\">Modül açıklaması</b></td>
+						<td>" . $module_description . "</td>
+					</tr>
+					<tr>
+						<td><b style=\"color: #212121;\">Modül sürümü</b></td>
+						<td>" . $version . "</td>
+					</tr>
+					<tr>
+						<td><b style=\"color: #212121;\">Modülü geliştiren</b></td>
+						<td>" . $module_author . "</td>
+					</tr>
+					<tr>
+						<td class=\"text-center\" colspan=\"2\">" . $is_module_up_to_date . "</td>
+					</tr>
+				</tbody>
+			</table>";
 
 echo "<br /></div>";
 
