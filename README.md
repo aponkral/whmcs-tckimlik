@@ -37,6 +37,11 @@ Modülün çalışması için 2 tane "custom field" oluşturmanız gerekiyor. Bu
 
 Kurulumu tamamlamak için WHMCS admin sayfanızdan "Setup -> Addon Modules" sayfasına gidip modülü etkinleştirin. Etkinleştirdikten sonra "Configure" butonuna tıklayarak TC Kimlik NO ve Doğum Yılı için oluşturduğunuz "Custom Field"ları seçmelisiniz.
 
+## Ekran Görüntüleri ##
+![Ekran görüntüsü 1](https://github.com/aponkral/whmcs-tckimlik/raw/master/screenshoots/whmcs-tckimlik-Screenshot-1.png "Ekran görüntüsü 1")
+
+![Ekran görüntüsü 2](https://github.com/aponkral/whmcs-tckimlik/raw/master/screenshoots/whmcs-tckimlik-Screenshot-2.png "Ekran görüntüsü 2")
+
 ## Etiketler ##
 - Tam Açık Kaynak Kodlu
 - WHMCS
@@ -99,6 +104,11 @@ You can download the latest release and unzip it directly to your WHMCSroot/modu
 Module needs two Custom Fields to be created in WHMCS. One should hold the TNI data, the other should hold the user's birth year.
 
 To complete the installation, you should go to your WHMCS admin area and click "Activate" in your "Setup -> Addon Modules" page. Then click "Configure" and select the appropriate fields you created before.
+
+## Screenshoots ##
+![Screenshot 1](https://github.com/aponkral/whmcs-tckimlik/raw/master/screenshoots/whmcs-tckimlik-Screenshot-1.png "Screenshot 1")
+
+![Screenshot 2](https://github.com/aponkral/whmcs-tckimlik/raw/master/screenshoots/whmcs-tckimlik-Screenshot-2.png "Screenshot 2")
 
 ## Tags ##
 - Full Open Source
