@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.2 (1.1.2-release.1)                                      *
-// * BuildId: 20180407.001                                                  *
-// * Build Date: 07 Apr 2018                                               *
+// * Version: 1.1.3 (1.1.3-release.1)                                      *
+// * BuildId: 20180417.001                                                  *
+// * Build Date: 17 Apr 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -45,7 +45,8 @@ function tckimlik_config() {
     $configarray = array(
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
-    "version" => "1.1.2",
+    "premium" => true,
+    "version" => "1.1.3",
     "author" => "APONKRAL",
     "language" => "turkish",
         "fields" => array(
@@ -113,12 +114,45 @@ $module_description = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
 $module_author = "<a href=\"https://aponkral.net/\" target=\"_blank\" title=\"APONKRAL Blog\" style=\"color: #2196F3;\">APONKRAL</a>";
 
 function update_check($version) {
-$currentversion = trim(file_get_contents('https://raw.githubusercontent.com/aponkral/whmcs-tckimlik/master/version.txt'));
+if(function_exists('curl_exec')) {
+	
+	$curl = curl_init();
+    $error = [];
 
-if($version == $currentversion)
-return "<p style=\"color: #4CAF50;\">T.C. Kimlik No Doğrulama modülü güncel.</p>";
-else
-return "<p style=\"color: #F44336;\">T.C. Kimlik No Doğrulama modülü güncel değil! (<i style=\"color: #607D8B;\">Güncel sürüm: " . $currentversion . "</i>)</p><p style=\"color: #616161;\">Modülü güncellemek istiyorsanız <a href=\"https://github.com/aponkral/whmcs-tckimlik\" target=\"_blank\" title=\"WHMCS T.C. Kimlik Numarası doğrulama modülü\" style=\"color: #2196F3;\">GitHub'dan</a> Modülü indirerek WHMCS ana dizinininden <strong>modules/addons/</strong> klasörüne yükleyin.</p><p style=\"color: #424242;\">Lütfen dosyaları güncelledikten sonra bu sayfaya tekrar bakın.</p>";
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => "https://raw.githubusercontent.com/aponkral/whmcs-tckimlik/master/version.txt",
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_SSL_VERIFYHOST => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 5,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_HTTPHEADER => array(
+        "content-type: text/plain; charset=utf-8",
+		"user-agent: APONKRAL.APPS/WHMCS-T.C.Kimlik.Dogrulama",
+      ),
+    ));
+    $currentversion = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+
+    if ($currentversion)
+    {
+        
+	if($version == $currentversion)
+		return "<p style=\"color: #4CAF50;\">T.C. Kimlik No Doğrulama modülü güncel.</p>";
+	else
+		return "<p style=\"color: #F44336;\">T.C. Kimlik No Doğrulama modülü güncel değil! (<i style=\"color: #607D8B;\">Güncel sürüm: " . $currentversion . "</i>)</p><p style=\"color: #616161;\">Modülü güncellemek istiyorsanız <a href=\"https://github.com/aponkral/whmcs-tckimlik\" target=\"_blank\" title=\"WHMCS T.C. Kimlik Numarası doğrulama modülü\" style=\"color: #2196F3;\">GitHub'dan</a> Modülü indirerek WHMCS ana dizinininden <strong>modules/addons/</strong> klasörüne yükleyin.</p><p style=\"color: #424242;\">Lütfen dosyaları güncelledikten sonra bu sayfaya tekrar bakın.</p>";
+    }
+
+    if ($err)
+    {
+		return "<p style=\"color: #F44336;\">GitHub Raw Sunucusu ile bağlantı kurulamıyor. Lütfen daha sonra tekrar deneyiniz.</p>";
+    }
+
+} else {
+		return "<p style=\"color: #F44336;\">API Sunucusu ile bağlantı kurulması için sunucunuzda <i>curl_exec</i> fonksiyonunun aktif olması gerekir.</p>";
+}
 }
 
 $is_module_up_to_date = update_check($version);
@@ -150,4 +184,3 @@ echo "<table class=\"table table-bordered\">
 echo "<br /></div>";
 
 }
-?>

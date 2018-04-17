@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.2 (1.1.2-release.1)                                      *
-// * BuildId: 20180407.001                                                  *
-// * Build Date: 07 Apr 2018                                               *
+// * Version: 1.1.3 (1.1.3-release.1)                                      *
+// * BuildId: 20180417.001                                                  *
+// * Build Date: 17 Apr 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -33,12 +33,12 @@
 // *                                                                       *
 // *************************************************************************
 
-require_once('helpers.php');
-
 if (!defined("WHMCS")) {
     die("This file cannot be accessed directly");
 exit();
 }
+
+require_once('helpers.php');
 
 // Get the module config
 $conf = get_module_conf();
@@ -148,5 +148,3 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 		
     }
 });
-
-?>

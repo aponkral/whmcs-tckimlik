@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.2 (1.1.2-release.1)                                      *
-// * BuildId: 20180407.001                                                  *
-// * Build Date: 07 Apr 2018                                               *
+// * Version: 1.1.3 (1.1.3-release.1)                                      *
+// * BuildId: 20180417.001                                                  *
+// * Build Date: 17 Apr 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -147,16 +147,9 @@ function get_module_conf()
  * @return str
  */
 
-function strtouppertr($str)
+function strtoupperutf8($str)
 {
-    $str = str_replace("ç", "Ç", $str);
-	$str = str_replace("ğ", "Ğ", $str);
-	$str = str_replace("ı", "I", $str);
-	$str = str_replace("i", "İ", $str);
-	$str = str_replace("ö", "Ö", $str);
-	$str = str_replace("ü", "Ü", $str);
-	$str = str_replace("ş", "Ş", $str);
-	$str = strtoupper($str);
+	$str = mb_strtoupper($str, "UTF-8");
 	$str = trim($str);
 	return $str;
 }
@@ -214,12 +207,14 @@ return true;
 
 if(isTcKimlik($tc)) {
 	
+	if(function_exists('curl_exec')) {
+	
 	$curl = curl_init();
     $error = [];
 
     // Convert name and surname to uppercase and year to an int value
-    $name = strtouppertr($name);
-    $surname = strtouppertr($surname);
+    $name = strtoupperutf8($name);
+    $surname = strtoupperutf8($surname);
     $year = intval($year);
 
     	$request = '<?xml version="1.0" encoding="utf-8"?>
@@ -236,6 +231,7 @@ if(isTcKimlik($tc)) {
     curl_setopt_array($curl, array(
       CURLOPT_URL => "https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx",
       CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_SSL_VERIFYHOST => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 10,
@@ -268,7 +264,11 @@ if(isTcKimlik($tc)) {
 
     if ($err)
     {
-        $error[] = "Sunucuyla bağlantı kurulamıyor. Lütfen daha sonra tekrar deneyiniz.";
+        $error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulamıyor. Lütfen daha sonra tekrar deneyiniz.";
+    }
+    
+    } else {
+    	$error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulması için sunucunuzda <i>curl_exec</i> fonksiyonunun aktif olması gerekir.";
     }
 
     return $error;
@@ -285,5 +285,3 @@ return $error;
 }
 
 }
-
-?>
