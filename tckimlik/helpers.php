@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.4 (1.1.4-release.1)                                      *
-// * BuildId: 20180801.001                                                  *
-// * Build Date: 01 Aug 2018                                               *
+// * Version: 1.1.5 (1.1.5-release.1)                                      *
+// * BuildId: 20180812.001                                                  *
+// * Build Date: 12 Aug 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -148,9 +148,16 @@ function get_module_conf()
  * @return str
  */
 
-function strtoupperutf8($str)
+function strtouppertr($str)
 {
-	$str = mb_strtoupper($str, "UTF-8");
+    $str = str_replace("ç", "Ç", $str);
+	$str = str_replace("ğ", "Ğ", $str);
+	$str = str_replace("ı", "I", $str);
+	$str = str_replace("i", "İ", $str);
+	$str = str_replace("ö", "Ö", $str);
+	$str = str_replace("ü", "Ü", $str);
+	$str = str_replace("ş", "Ş", $str);
+	$str = strtoupper($str);
 	$str = trim($str);
 	return $str;
 }
@@ -214,8 +221,8 @@ if(isTcKimlik($tc)) {
     $error = [];
 
     // Convert name and surname to uppercase and year to an int value
-    $name = strtoupperutf8($name);
-    $surname = strtoupperutf8($surname);
+    $name = strtouppertr($name);
+    $surname = strtouppertr($surname);
     $year = intval($year);
 
     	$request = '<?xml version="1.0" encoding="utf-8"?>
