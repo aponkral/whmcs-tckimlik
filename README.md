@@ -20,10 +20,10 @@ WHMCS'nin minimum gereksinimlerini görmek için https://docs.whmcs.com/System_R
 - Direkt nvi.gov.tr API ile doğrulama
 
 ## Kurulum ##
-Projeyi herhangi bir yere clonelayabilir ya da GitHub üzerinden son sürümü indirebilirsiniz. Sürümler için [releases](https://github.com/aponkral/whmcs-tckimlik/releases) sayfasına göz atın.
+Projeyi herhangi bir yere klonlayabilir ya da GitHub üzerinden son sürümü indirebilirsiniz. Sürümler için [releases](https://github.com/aponkral/whmcs-tckimlik/releases) sayfasına göz atın.
 
 #### Clone ####
-Repoyu clonelayacaksanız herhangi bir yere cloneladıktan sonra proje dizinine gidip tckimlik klasörünü WHMCS_dizininiz/modules/addons dizini içerisine taşımalısınız;
+Repoyu klonlayacaksanız herhangi bir yere klonladıktan sonra proje dizinine gidip tckimlik klasörünü WHMCS_dizininiz/modules/addons dizini içerisine taşımalısınız;
 
 ```
 # cd whmcs-tckimlik
