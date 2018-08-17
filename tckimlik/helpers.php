@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.5 (1.1.5-release.1)                                      *
-// * BuildId: 20180812.001                                                  *
-// * Build Date: 12 Aug 2018                                               *
+// * Version: 1.1.6 (1.1.6-release.1)                                      *
+// * BuildId: 20180817.001                                                  *
+// * Build Date: 17 Aug 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -249,6 +249,7 @@ if(isTcKimlik($tc)) {
       CURLOPT_HTTPHEADER => array(
         "cache-control: no-cache",
         "content-type: application/soap+xml; charset=utf-8",
+        "user-agent: APONKRAL.APPS/WHMCS-T.C.Kimlik.Dogrulama",
       ),
     ));
     $response = curl_exec($curl);
