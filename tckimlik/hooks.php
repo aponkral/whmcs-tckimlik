@@ -106,7 +106,7 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 		
 		function validate_unique_identity($user_id, $tc_field, $form_tckimlik)
 		{
-			if(!isset($user_id) || empty($user_id) || !is_int($user_id))
+			if(!isset($user_id) || empty($user_id) || !is_numeric($user_id))
 			$user_id = 0;
 			
 			$sql_ui_count = "select COUNT(*) as total from `tblcustomfieldsvalues` where not relid=" . $user_id . " AND fieldid=" . $tc_field . " AND value='" . $form_tckimlik . "'";
