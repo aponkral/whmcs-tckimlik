@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.6 (1.1.6-release.1)                                      *
-// * BuildId: 20180817.001                                                  *
-// * Build Date: 17 Aug 2018                                               *
+// * Version: 1.1.7 (1.1.7-release.1)                                      *
+// * BuildId: 20181010.001                                                  *
+// * Build Date: 10 Oct 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -47,7 +47,7 @@ function tckimlik_config() {
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
     "premium" => true,
-    "version" => "1.1.6",
+    "version" => "1.1.7",
     "author" => "APONKRAL",
     "language" => "turkish",
         "fields" => array(
@@ -88,6 +88,12 @@ function tckimlik_config() {
                 "Size" => 25,
                 "Description" => "T.C. Kimlik Numarası uyuşmadığı takdirde müşteriye gösterilecek hata yazısı.",
                 "Default" => "T.C. Kimlik Numaranız girmiş olduğunuz bilgiler ile uyuşmamaktadır.",
+            ),
+            "via_proxy" => array(
+                "FriendlyName" => "Vekil Sunucu Kullan",
+                "Type" => "yesno",
+                "Size" => "25",
+                "Description" => "T.C. Kimlik Bilgilerini APONKRAL API aracılığı ile doğrula. (Daha hızlı ve daha güvenli.)",
             ),
         )
     );

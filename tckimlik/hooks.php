@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.6 (1.1.6-release.1)                                      *
-// * BuildId: 20180817.001                                                  *
-// * Build Date: 17 Aug 2018                                               *
+// * Version: 1.1.7 (1.1.7-release.1)                                      *
+// * BuildId: 20181010.001                                                  *
+// * Build Date: 10 Oct 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -49,8 +49,9 @@ $country_check = $conf["only_turkish"];
 $unique_identity = $conf["unique_identity"];
 $unique_identity_message = $conf["unique_identity_message"];
 $error_message = $conf["error_message"];
+$via_proxy = $conf["via_proxy"];
 
-add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $country_check, $unique_identity, $unique_identity_message, $error_message)
+add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $country_check, $unique_identity, $unique_identity_message, $error_message, $via_proxy)
 {
     if ($_SERVER["SCRIPT_NAME"] == '/creditcard.php')
     {
@@ -123,8 +124,8 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 		if(validate_unique_identity($user_id, $tc_field, $form_tckimlik) == true)
 		{
 		
-        $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message);
-        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message), $validation, $validationn);
+        $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy);
+        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy), $validation, $validationn);
 
         if ($validation !== true)
         {
@@ -138,8 +139,8 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 		}
 		else
 		{
-			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message);
-        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message), $validation, $validationn);
+			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy);
+        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy), $validation, $validationn);
 
 			if ($validation !== true)
 			{

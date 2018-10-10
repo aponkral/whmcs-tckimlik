@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.6 (1.1.6-release.1)                                      *
-// * BuildId: 20180817.001                                                  *
-// * Build Date: 17 Aug 2018                                               *
+// * Version: 1.1.7 (1.1.7-release.1)                                      *
+// * BuildId: 20181010.001                                                  *
+// * Build Date: 10 Oct 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -173,7 +173,7 @@ function strtouppertr($str)
  * @return boolean
  */
 
-function validate_tc($tc, $year, $name, $surname, $error_message)
+function validate_tc($tc, $year, $name, $surname, $error_message, $via_proxy)
 {
 	
 	if(filter_var(
@@ -215,7 +215,63 @@ return true;
 
 if(isTcKimlik($tc)) {
 	
-	if(function_exists('curl_exec')) {
+	if( $via_proxy == "on" ) {
+    
+    if(function_exists('curl_exec')) {
+	
+	$curl = curl_init();
+    $error = [];
+
+    // Convert name and surname to uppercase and year to an int value
+    $name = strtouppertr($name);
+    $surname = strtouppertr($surname);
+    $year = intval($year);
+    
+    $apiurl = "https://api.aponkral.com/tckimlik-api/?name=" . $name . "&surname=" . $surname . "&tin=". $tc . "&birthyear=" . $year;
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => $apiurl,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_SSL_VERIFYHOST => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 10,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_HTTPHEADER => array(
+        "cache-control: no-cache",
+        "content-type: text/plain; charset=utf-8",
+        "user-agent: APONKRAL.APPS/WHMCS-T.C.Kimlik.Dogrulama",
+      ),
+    ));
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+
+    if ($response)
+    {
+        
+        if ($response == "true")
+        {
+            return true;
+        } elseif ($response == "false") {
+            $error[] = $error_message;
+        } else {
+            $error[] = $error_message;
+        }
+    }
+
+    if ($err)
+    {
+        $error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulamıyor. Lütfen daha sonra tekrar deneyiniz.";
+    }
+    
+    } else {
+    	$error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulması için sunucunuzda <i>curl_exec</i> fonksiyonunun aktif olması gerekir.";
+    }
+    
+    } else {
+    
+    if(function_exists('curl_exec')) {
 	
 	$curl = curl_init();
     $error = [];
@@ -279,6 +335,8 @@ if(isTcKimlik($tc)) {
     } else {
     	$error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulması için sunucunuzda <i>curl_exec</i> fonksiyonunun aktif olması gerekir.";
     }
+    
+	}
 
     return $error;
 } else {
