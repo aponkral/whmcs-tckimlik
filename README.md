@@ -18,6 +18,7 @@ WHMCS'nin minimum gereksinimlerini görmek için https://docs.whmcs.com/System_R
 - Benzersiz Kimlik (opsiyonel)
 - Özelleştirilebilir bilgi mesajları
 - Direkt nvi.gov.tr API ile doğrulama
+- Vekil sunucu (APONKRAL API) ile doğrulama
 
 ## Kurulum ##
 Projeyi herhangi bir yere klonlayabilir ya da GitHub üzerinden son sürümü indirebilirsiniz. Sürümler için [releases](https://github.com/aponkral/whmcs-tckimlik/releases) sayfasına göz atın.
@@ -86,6 +87,7 @@ https://docs.whmcs.com/System_Requirements
 - Unique Identity (optional)
 - Customizable information messages
 - Direct ​​Verification via nvi.gov.tr API
+- Verification with proxy server (APONKRAL API)
 
 ## Installation ##
 You can install this module by cloning the repo or downloading the latest release from GitHub. See the [releases](https://github.com/aponkral/whmcs-tckimlik/releases) page.
