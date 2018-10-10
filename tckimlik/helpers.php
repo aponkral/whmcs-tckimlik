@@ -3,8 +3,8 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.7 (1.1.7-release.1)                                      *
-// * BuildId: 20181010.001                                                  *
+// * Version: 1.1.8 (1.1.8release.1)                                      *
+// * BuildId: 20181010.002                                                  *
 // * Build Date: 10 Oct 2018                                               *
 // *                                                                       *
 // *************************************************************************
@@ -35,7 +35,7 @@
 // Her şeyi sana yazdım!.. Her şeye seni yazdım!.. * Sena AÇIK
 
 if (!defined("WHMCS")) {
-    die("This file cannot be accessed directly");
+    die("This file cannot be accessed directly. This module was made by APONKRAL.");
 exit();
 }
 
