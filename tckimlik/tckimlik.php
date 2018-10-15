@@ -47,7 +47,7 @@ function tckimlik_config() {
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
     "premium" => true,
-    "version" => "1.1.7",
+    "version" => "1.1.8",
     "author" => "APONKRAL",
     "language" => "turkish",
         "fields" => array(
