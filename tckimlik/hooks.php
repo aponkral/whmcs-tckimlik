@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.8 (1.1.8release.1)                                      *
-// * BuildId: 20181010.002                                                  *
-// * Build Date: 10 Oct 2018                                               *
+// * Version: 1.1.9 (1.1.9release.1)                                      *
+// * BuildId: 20181018.001                                                  *
+// * Build Date: 18 Oct 2018                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
