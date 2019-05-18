@@ -132,13 +132,31 @@ else
 		{
 		
         $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy, $user_id);
-        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy), $validation, $validationn);
+        logModuleCall('tckimlik','validation',[$form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy], $validation, $validationn);
 
 		if($validation === true && $verification_status_control == "on") {
-				Capsule::table('tblcustomfieldsvalues')
-					->where("relid", "=", $user_id)
-					->where("fieldid", "=", $verification_status_field)
-					->update(array("value"=>"on"));
+			$check_verification_status = Capsule::table('tblcustomfieldsvalues')
+					->where('relid', '=', $user_id)
+					->where('fieldid', '=', $verification_status_field)
+					->count();
+				
+if($check_verification_status == 1) {
+	Capsule::table('tblcustomfieldsvalues')
+			->where("relid", "=", $user_id)
+			->where("fieldid", "=", $verification_status_field)
+			->update(["value"=>"on"]);
+}
+else {
+$insert_verification_status = [
+	"fieldid" => $verification_status_field,
+	"relid" => $user_id,
+	"value" => "on",
+	"created_at" => date("Y-m-d H:i:s", time()),
+	"updated_at" => date("Y-m-d H:i:s", time()),
+	];
+	Capsule::table('tblcustomfieldsvalues')
+		->insert($insert_verification_status);
+}
 		}
         elseif ($validation !== true)
         {
@@ -153,7 +171,7 @@ else
 		else
 		{
 			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy, $user_id);
-        logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy), $validation, $validationn);
+        logModuleCall('tckimlik','validation',[$form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy], $validation, $validationn);
 
 			if ($validation !== true)
 			{

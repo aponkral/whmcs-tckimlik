@@ -43,7 +43,7 @@ require_once('helpers.php');
 
 function tckimlik_config() {
     $db_field_names = str_putcsv(get_custom_fields());
-    $configarray = array(
+    $configarray = [
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
     "premium" => true,
@@ -51,58 +51,58 @@ function tckimlik_config() {
     "author" => "APONKRAL",
     "link" => "https://aponkral.net/",
     "language" => "turkish",
-        "fields" => array(
-            "tc_field" => array(
+        "fields" => [
+            "tc_field" => [
                 "FriendlyName" => "TC Kimlik Özel Alanı",
                 "Type" => "dropdown",
                 "Options" => $db_field_names,
                 "Description" => "Özel alanlarınız arasından TC Kimlik için olanı seçin",
-            ),
-            "birthyear_field" => array(
+            ],
+            "birthyear_field" => [
                 "FriendlyName" => "Doğum yılı alanı",
                 "Type" => "dropdown",
                 "Options" => $db_field_names,
                 "Description" => "Özel alanlarınız arasından doğum yılı için olanı seçin",
-            ),
-            "verification_status_field" => array(
+            ],
+            "verification_status_field" => [
                 "FriendlyName" => "Doğrulama Durumu Kontrolü",
                 "Type" => "dropdown",
                 "Options" => $db_field_names,
                 "Description" => "Özel alanlarınız arasından T.C. Kimlik Doğrulama Durumu için olanı seçin",
-            ),
-            "only_turkish" => array(
+            ],
+            "only_turkish" => [
                 "FriendlyName" => "Ülke kontrolü",
                 "Type" => "yesno",
                 "Size" => "25",
                 "Description" => "Yalnızca Türkiye adresli kullanıcılar için geçerli olsun",
-            ),
-			"unique_identity" => array(
+            ],
+			"unique_identity" => [
                 "FriendlyName" => "Benzersiz Kimlik",
                 "Type" => "yesno",
                 "Size" => "25",
                 "Description" => "Bir T.C. Kimlik Numarası ile bir kere kayıt olunabilir.",
-            ),
-            "verification_status_control" => array(
+            ],
+            "verification_status_control" => [
                 "FriendlyName" => "T.C. Kimlik Doğrulama Kontrolü",
                 "Type" => "yesno",
                 "Size" => "25",
                 "Description" => "T.C. Kimlik doğrulaması yapmayan müşterilere bilgi mesajı gösterir.",
-            ),
-			"unique_identity_message" => array(
+            ],
+			"unique_identity_message" => [
                 "FriendlyName" => "Benzersiz Kimlik Mesajı",
                 "Type" => "text",
                 "Size" => 25,
                 "Description" => "Başka kullanıcıya ait olan bir T.C. Kimlik Numarası ile yeni kaydı ve profil güncellemeyi engeller.",
                 "Default" => "Bu T.C. Kimlik Numarası ile kayıtlı bir kullanıcı var.",
-            ),
-            "error_message" => array(
+            ],
+            "error_message" => [
                 "FriendlyName" => "Hata Mesajı",
                 "Type" => "text",
                 "Size" => 25,
                 "Description" => "T.C. Kimlik Numarası uyuşmadığı takdirde müşteriye gösterilecek hata yazısı.",
                 "Default" => "T.C. Kimlik Numaranız girmiş olduğunuz bilgiler ile uyuşmamaktadır.",
-            ),
-            "verification_about" => array(
+            ],
+            "verification_about" => [
                 "FriendlyName" => "T.C. Kimlik Doğrulama Bilgi Mesajı",
                 "Type" => "textarea",
                 "Size" => 25,
@@ -110,27 +110,27 @@ function tckimlik_config() {
                 "Default" => "Artık T.C. Kimlik doğrulaması yapmaktayız. Bu nedenle henüz T.C. Kimlik numarası doğrulaması yapmadıysanız müşteri bilgilerinizi güncellemeniz gerekmektedir.
 
 T.C. Kimlik doğrulaması yapmayan müşterilerimiz müşteri panelinde bilgi güncellemek dışında işlem yapamazlar.",
-            ),
-            "via_proxy" => array(
+            ],
+            "via_proxy" => [
                 "FriendlyName" => "Vekil Sunucu Kullan",
                 "Type" => "yesno",
                 "Size" => "25",
                 "Description" => "T.C. Kimlik Bilgilerini APONKRAL API aracılığı ile doğrula. (Daha hızlı ve daha güvenli.)",
-            ),
-        )
-    );
+            ],
+        ]
+    ];
     return $configarray;
 }
 
 function tckimlik_activate() {
 
-	return array('status' => 'success', 'description' => 'TC Kimlik No Dogrulama modülü başarıyla etkinleştirildi.');
+	return ['status' => 'success', 'description' => 'TC Kimlik No Dogrulama modülü başarıyla etkinleştirildi.'];
 
 }
 
 function tckimlik_deactivate() {
 
-    return array('status' => 'success', 'description' => 'TC Kimlik No Dogrulama modülü başarıyla pasifleştirildi.');
+    return ['status' => 'success', 'description' => 'TC Kimlik No Dogrulama modülü başarıyla pasifleştirildi.'];
 
 }
 
@@ -150,7 +150,7 @@ if(function_exists('curl_exec')) {
 	$curl = curl_init();
     $error = [];
 
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL => "https://raw.githubusercontent.com/aponkral/whmcs-tckimlik/master/version.txt",
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_SSL_VERIFYHOST => true,
@@ -158,11 +158,11 @@ if(function_exists('curl_exec')) {
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 5,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_HTTPHEADER => array(
+      CURLOPT_HTTPHEADER => [
         "content-type: text/plain; charset=utf-8",
 		"user-agent: APONKRAL.APPS/WHMCS-T.C.Kimlik.Dogrulama",
-      ),
-    ));
+      ],
+    ]);
     $currentversion = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
@@ -226,17 +226,17 @@ $clientarea_details_link = $CONFIG['SystemURL'] . "/" . "clientarea.php?action=d
 	$modulelink = $vars['modulelink'];
 
 if($_GET['page'] == "verification_about") {
-	return array(
+	return [
 		'pagetitle' => 'TC Kimlik',
-		'breadcrumb' => array($modulelink=>'TC Kimlik'),
+		'breadcrumb' => [$modulelink=>'TC Kimlik'],
 		'templatefile' => 'templates/verificationabout',
 		'requirelogin' => false, # accepts true/false
 		'forcessl' => false, # accepts true/false
-		'vars' => array(
+		'vars' => [
 			'description' => $verification_about,
 			'clientarea_details_link' => $clientarea_details_link,
-		),
-	);
+		],
+	];
 }
 else {
 $tckimlik_config = tckimlik_config();
@@ -246,18 +246,18 @@ $tckimlik_config = tckimlik_config();
 	$author_name = $tckimlik_config['author'];
 	$author_link = $tckimlik_config['link'];
 
-return array(
+return [
 		'pagetitle' => 'TC Kimlik',
-		'breadcrumb' => array($modulelink=>'TC Kimlik'),
+		'breadcrumb' => [$modulelink=>'TC Kimlik'],
 		'templatefile' => 'templates/index',
 		'requirelogin' => false, # accepts true/false
 		'forcessl' => false, # accepts true/false
-		'vars' => array(
+		'vars' => [
 			'module_name' => $module_name,
 			'module_description' => $module_description,
 			'author_name' => $author_name,
 			'author_link' => $author_link,
-		),
-	);
+		],
+	];
 }
 }

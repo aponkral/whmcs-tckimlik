@@ -125,7 +125,7 @@ if (!function_exists('str_putcsv')) {
 function get_module_conf()
 {
     $retVal = [];
-    $exclude_fields = array('version', 'access',);
+    $exclude_fields = ['version', 'access',];
     $results = Capsule::table('tbladdonmodules')->select('setting', 'value')
                                             ->where('module', 'tckimlik')
                                             ->whereNotIn('setting', $exclude_fields)
@@ -179,23 +179,23 @@ function validate_tc($tc, $year, $name, $surname, $error_message, $via_proxy, $u
 	if(filter_var(
 	$tc,
 	FILTER_VALIDATE_INT,
-	array(
-	'options' => array(
+	[
+	'options' => [
 	'min_range' => 10000000000,
 	'max_range' => 99999999999,
 	'default' => FALSE
-	)
-	)
+	]
+	]
 	) == $tc && filter_var(
 	$year,
 	FILTER_VALIDATE_INT,
-	array(
-	'options' => array(
+	[
+	'options' => [
 	'min_range' => 1900,
 	'max_range' => date("Y"),
 	'default' => FALSE
-	)
-	)
+	]
+	]
 	) == $year) {
 
 function isTcKimlik($tc)  
@@ -229,7 +229,7 @@ if(isTcKimlik($tc)) {
     
     $apiurl = "https://api.aponkral.com/tckimlik-api/?name=" . $name . "&surname=" . $surname . "&tin=". $tc . "&birthyear=" . $year;
 
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL => $apiurl,
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_SSL_VERIFYHOST => true,
@@ -237,13 +237,13 @@ if(isTcKimlik($tc)) {
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 10,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_HTTPHEADER => array(
+      CURLOPT_HTTPHEADER => [
         "cache-control: no-cache",
         "content-type: text/plain; charset=utf-8",
         "user-agent: APONKRAL.APPS/WHMCS-T.C.Kimlik.Dogrulama",
         "api-connecting-host: " . $_SERVER['HTTP_HOST'],
-      ),
-    ));
+      ],
+    ]);
     $response = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
@@ -293,7 +293,7 @@ if(isTcKimlik($tc)) {
         </TCKimlikNoDogrula>
     </soap12:Body>
 </soap12:Envelope>';
-    curl_setopt_array($curl, array(
+    curl_setopt_array($curl, [
       CURLOPT_URL => "https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx",
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_SSL_VERIFYHOST => true,
@@ -303,12 +303,12 @@ if(isTcKimlik($tc)) {
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "POST",
       CURLOPT_POSTFIELDS => $request,
-      CURLOPT_HTTPHEADER => array(
+      CURLOPT_HTTPHEADER => [
         "cache-control: no-cache",
         "content-type: application/soap+xml; charset=utf-8",
         "user-agent: APONKRAL.APPS/WHMCS-T.C.Kimlik.Dogrulama",
-      ),
-    ));
+      ],
+    ]);
     $response = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
