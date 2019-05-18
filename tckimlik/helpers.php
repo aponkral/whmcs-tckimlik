@@ -173,7 +173,7 @@ function strtouppertr($str)
  * @return boolean
  */
 
-function validate_tc($tc, $year, $name, $surname, $error_message, $via_proxy, $user_id)
+function validate_tc($tc, $year, $name, $surname, $error_message, $via_proxy)
 {
 	
 	if(filter_var(

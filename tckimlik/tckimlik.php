@@ -230,7 +230,7 @@ if($_GET['page'] == "verification_about") {
 		'pagetitle' => 'TC Kimlik',
 		'breadcrumb' => [$modulelink=>'TC Kimlik'],
 		'templatefile' => 'templates/verificationabout',
-		'requirelogin' => false, # accepts true/false
+		'requirelogin' => true, # accepts true/false
 		'forcessl' => false, # accepts true/false
 		'vars' => [
 			'description' => $verification_about,

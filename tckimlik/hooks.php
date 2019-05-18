@@ -55,7 +55,7 @@ $error_message = $conf["error_message"];
 $verification_about = $conf["verification_about"];
 $via_proxy = $conf["via_proxy"];
 
-add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $verification_status_field, $country_check, $unique_identity, $verification_status_control, $unique_identity_message, $error_message, $via_proxy, $user_id)
+add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $verification_status_field, $country_check, $unique_identity, $verification_status_control, $unique_identity_message, $error_message, $via_proxy)
 {
     if ($_SERVER["SCRIPT_NAME"] == '/creditcard.php')
     {
@@ -126,15 +126,15 @@ else
 	return false;
 		}
 		
-		$user_id = $vars['userid'];
+			$user_id = $vars["userid"];
 
 		if(validate_unique_identity($user_id, $tc_field, $form_tckimlik) == true)
 		{
 		
-        $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy, $user_id);
+        $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy);
         logModuleCall('tckimlik','validation',[$form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy], $validation, $validationn);
 
-		if($validation === true && $verification_status_control == "on") {
+		if($validation === true && $verification_status_control == "on" && $user_id > 0) {
 			$check_verification_status = Capsule::table('tblcustomfieldsvalues')
 					->where('relid', '=', $user_id)
 					->where('fieldid', '=', $verification_status_field)
@@ -170,7 +170,7 @@ $insert_verification_status = [
 		}
 		else
 		{
-			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy, $user_id);
+			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy);
         logModuleCall('tckimlik','validation',[$form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy], $validation, $validationn);
 
 			if ($validation !== true)
