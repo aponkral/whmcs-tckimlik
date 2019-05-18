@@ -19,6 +19,7 @@ WHMCS'nin minimum gereksinimlerini görmek için https://docs.whmcs.com/System_R
 - Özelleştirilebilir bilgi mesajları
 - Direkt nvi.gov.tr API ile doğrulama
 - Vekil sunucu (APONKRAL API) ile doğrulama
+- Kimlik doğrulaması yapmayan kullanıcıları bilgi sayfasına yönlendirme
 
 ## Kurulum ##
 Projeyi herhangi bir yere klonlayabilir ya da GitHub üzerinden son sürümü indirebilirsiniz. Sürümler için [releases](https://github.com/aponkral/whmcs-tckimlik/releases) sayfasına göz atın.
@@ -37,6 +38,22 @@ Repoyu klonlayacaksanız herhangi bir yere klonladıktan sonra proje dizinine gi
 Modülün çalışması için 2 tane "custom field" oluşturmanız gerekiyor. Bunlardan biri TC Kimlik Numarasının girilmesi, diğeri ise kullanıcının doğum yılını almak için olmalı.
 
 Kurulumu tamamlamak için WHMCS admin sayfanızdan "Setup -> Addon Modules" sayfasına gidip modülü etkinleştirin. Etkinleştirdikten sonra "Configure" butonuna tıklayarak TC Kimlik NO ve Doğum Yılı için oluşturduğunuz "Custom Field"ları seçmelisiniz.
+
+## Özel Müşteri Alanları ##
+T.C. Kimlik Numarası alanı;
+Alan İsmi: T.C. Kimlik Numarası
+Alan Türü: Metin Kutusu
+Seçenekler: Zorunlu alan, Sipariş formunda göster
+
+Doğum yılı alanı;
+Alan İsmi: Doğum Yılı
+Alan Türü: Metin Kutusu
+Seçenekler: Zorunlu alan, Sipariş formunda göster
+
+T.C. Kimlik doğrulama durumu alanı;
+Alan İsmi: T.C. Kimlik Doğrulama Durumu
+Alan Türü: Onay Kutusu
+Seçenekler: Sadece Admin
 
 ## Ekran Görüntüleri ##
 ![Ekran görüntüsü 1](https://github.com/aponkral/whmcs-tckimlik/raw/master/screenshoots/whmcs-tckimlik-Screenshot-1.png "Ekran görüntüsü 1")
@@ -88,6 +105,7 @@ https://docs.whmcs.com/System_Requirements
 - Customizable information messages
 - Direct ​​Verification via nvi.gov.tr API
 - Verification with proxy server (APONKRAL API)
+- Forward non-authenticated users to the information page
 
 ## Installation ##
 You can install this module by cloning the repo or downloading the latest release from GitHub. See the [releases](https://github.com/aponkral/whmcs-tckimlik/releases) page.
@@ -106,6 +124,22 @@ You can download the latest release and unzip it directly to your WHMCSroot/modu
 Module needs two Custom Fields to be created in WHMCS. One should hold the TNI data, the other should hold the user's birth year.
 
 To complete the installation, you should go to your WHMCS admin area and click "Activate" in your "Setup -> Addon Modules" page. Then click "Configure" and select the appropriate fields you created before.
+
+## Custom Client Fields ##
+Turkish Identity Number field;
+Field Name: Turkish Identity Number
+Field Type: Text Box
+Options: Required field, Show on order form
+
+Birthyear field;
+Field Name: Birthyear
+Field Type: Text Box
+Options: Required field, Show on order form
+
+Turkish Identity verification status field;
+Field Name: Turkish Identity Verification Satus
+Field Type: Tick Box
+Options: Admin Only
 
 ## Screenshoots ##
 ![Screenshot 1](https://github.com/aponkral/whmcs-tckimlik/raw/master/screenshoots/whmcs-tckimlik-Screenshot-1.png "Screenshot 1")
