@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.9 (1.1.9release.1)                                      *
-// * BuildId: 20181018.001                                                  *
-// * Build Date: 18 Oct 2018                                               *
+// * Version: 2.0.0 (2.0.0release.1)                                      *
+// * BuildId: 20190518.001                                                  *
+// * Build Date: 18 May 2019                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -47,8 +47,9 @@ function tckimlik_config() {
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
     "premium" => true,
-    "version" => "1.1.9",
+    "version" => "2.0.0",
     "author" => "APONKRAL",
+    "link" => "https://aponkral.net/",
     "language" => "turkish",
         "fields" => array(
             "tc_field" => array(
@@ -63,6 +64,12 @@ function tckimlik_config() {
                 "Options" => $db_field_names,
                 "Description" => "Özel alanlarınız arasından doğum yılı için olanı seçin",
             ),
+            "verification_status_field" => array(
+                "FriendlyName" => "Doğrulama Durumu Kontrolü",
+                "Type" => "dropdown",
+                "Options" => $db_field_names,
+                "Description" => "Özel alanlarınız arasından T.C. Kimlik Doğrulama Durumu için olanı seçin",
+            ),
             "only_turkish" => array(
                 "FriendlyName" => "Ülke kontrolü",
                 "Type" => "yesno",
@@ -74,6 +81,12 @@ function tckimlik_config() {
                 "Type" => "yesno",
                 "Size" => "25",
                 "Description" => "Bir T.C. Kimlik Numarası ile bir kere kayıt olunabilir.",
+            ),
+            "verification_status_control" => array(
+                "FriendlyName" => "T.C. Kimlik Doğrulama Kontrolü",
+                "Type" => "yesno",
+                "Size" => "25",
+                "Description" => "T.C. Kimlik doğrulaması yapmayan müşterilere bilgi mesajı gösterir.",
             ),
 			"unique_identity_message" => array(
                 "FriendlyName" => "Benzersiz Kimlik Mesajı",
@@ -88,6 +101,15 @@ function tckimlik_config() {
                 "Size" => 25,
                 "Description" => "T.C. Kimlik Numarası uyuşmadığı takdirde müşteriye gösterilecek hata yazısı.",
                 "Default" => "T.C. Kimlik Numaranız girmiş olduğunuz bilgiler ile uyuşmamaktadır.",
+            ),
+            "verification_about" => array(
+                "FriendlyName" => "T.C. Kimlik Doğrulama Bilgi Mesajı",
+                "Type" => "textarea",
+                "Size" => 25,
+                "Description" => "T.C. Kimlik Numarasını doğrulamayan müşteriye gösterilecek bilgi yazısı.",
+                "Default" => "Artık T.C. Kimlik doğrulaması yapmaktayız. Bu nedenle henüz T.C. Kimlik numarası doğrulaması yapmadıysanız müşteri bilgilerinizi güncellemeniz gerekmektedir.
+
+T.C. Kimlik doğrulaması yapmayan müşterilerimiz müşteri panelinde bilgi güncellemek dışında işlem yapamazlar.",
             ),
             "via_proxy" => array(
                 "FriendlyName" => "Vekil Sunucu Kullan",
@@ -113,12 +135,14 @@ function tckimlik_deactivate() {
 }
 
 function tckimlik_output($vars) {
+$tckimlik_config = tckimlik_config();
+
+	$module_name = $tckimlik_config['name'];
+	$module_description = $tckimlik_config['description'];
+	$module_author = $tckimlik_config['author'];
+	$author_link = $tckimlik_config['link'];
 	
     $version = $vars['version'];
-
-$module_name = "TC Kimlik No Dogrulama";
-$module_description = "WHMCS için T.C. Kimlik numarası doğrulama modülü";
-$module_author = "<a href=\"https://aponkral.net/\" target=\"_blank\" title=\"APONKRAL Blog\" style=\"color: #2196F3;\">APONKRAL</a>";
 
 function update_check($version) {
 if(function_exists('curl_exec')) {
@@ -180,7 +204,7 @@ echo "<table class=\"table table-bordered\">
 					</tr>
 					<tr>
 						<td><b style=\"color: #212121;\">Modülü geliştiren</b></td>
-						<td>" . $module_author . "</td>
+						<td><a href=\"" . $author_link . "\" target=\"_blank\" title=\"APONKRAL Blog\" style=\"color: #2196F3;\">" . $module_author . "</a></td>
 					</tr>
 					<tr>
 						<td class=\"text-center\" colspan=\"2\">" . $is_module_up_to_date . "</td>
@@ -190,4 +214,50 @@ echo "<table class=\"table table-bordered\">
 
 echo "<br /></div>";
 
+}
+
+function tckimlik_clientarea($vars) {
+$conf = get_module_conf();
+$verification_about = $conf["verification_about"];
+
+global $CONFIG;
+$clientarea_details_link = $CONFIG['SystemURL'] . "/" . "clientarea.php?action=details";
+
+	$modulelink = $vars['modulelink'];
+
+if($_GET['page'] == "verification_about") {
+	return array(
+		'pagetitle' => 'TC Kimlik',
+		'breadcrumb' => array($modulelink=>'TC Kimlik'),
+		'templatefile' => 'templates/verificationabout',
+		'requirelogin' => false, # accepts true/false
+		'forcessl' => false, # accepts true/false
+		'vars' => array(
+			'description' => $verification_about,
+			'clientarea_details_link' => $clientarea_details_link,
+		),
+	);
+}
+else {
+$tckimlik_config = tckimlik_config();
+
+	$module_name = $tckimlik_config['name'];
+	$module_description = $tckimlik_config['description'];
+	$author_name = $tckimlik_config['author'];
+	$author_link = $tckimlik_config['link'];
+
+return array(
+		'pagetitle' => 'TC Kimlik',
+		'breadcrumb' => array($modulelink=>'TC Kimlik'),
+		'templatefile' => 'templates/index',
+		'requirelogin' => false, # accepts true/false
+		'forcessl' => false, # accepts true/false
+		'vars' => array(
+			'module_name' => $module_name,
+			'module_description' => $module_description,
+			'author_name' => $author_name,
+			'author_link' => $author_link,
+		),
+	);
+}
 }

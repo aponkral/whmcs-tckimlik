@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.9 (1.1.9release.1)                                      *
-// * BuildId: 20181018.001                                                  *
-// * Build Date: 18 Oct 2018                                               *
+// * Version: 2.0.0 (2.0.0release.1)                                      *
+// * BuildId: 20190518.001                                                  *
+// * Build Date: 18 May 2019                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -40,7 +40,7 @@ exit();
 }
 
 // use WHMCS (Laravel) db functions
-use WHMCS\Database\Capsule;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
  *
@@ -173,7 +173,7 @@ function strtouppertr($str)
  * @return boolean
  */
 
-function validate_tc($tc, $year, $name, $surname, $error_message, $via_proxy)
+function validate_tc($tc, $year, $name, $surname, $error_message, $via_proxy, $user_id)
 {
 	
 	if(filter_var(
@@ -241,6 +241,7 @@ if(isTcKimlik($tc)) {
         "cache-control: no-cache",
         "content-type: text/plain; charset=utf-8",
         "user-agent: APONKRAL.APPS/WHMCS-T.C.Kimlik.Dogrulama",
+        "api-connecting-host: " . $_SERVER['HTTP_HOST'],
       ),
     ));
     $response = curl_exec($curl);
@@ -266,7 +267,7 @@ if(isTcKimlik($tc)) {
     }
     
     } else {
-    	$error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulması için sunucunuzda <i>curl_exec</i> fonksiyonunun aktif olması gerekir.";
+    	$error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulması için sunucunuzda <i>CURL</i> fonksiyonlarının aktif olması gerekir.";
     }
     
     } else {
@@ -333,7 +334,7 @@ if(isTcKimlik($tc)) {
     }
     
     } else {
-    	$error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulması için sunucunuzda <i>curl_exec</i> fonksiyonunun aktif olması gerekir.";
+    	$error[] = "<b>TC Kimlik No Dogrulama:</b> API Sunucusu ile bağlantı kurulması için sunucunuzda <i>CURL</i> fonksiyonlarının aktif olması gerekir.";
     }
     
 	}

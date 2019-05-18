@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.1.9 (1.1.9release.1)                                      *
-// * BuildId: 20181018.001                                                  *
-// * Build Date: 18 Oct 2018                                               *
+// * Version: 2.0.0 (2.0.0release.1)                                      *
+// * BuildId: 20190518.001                                                  *
+// * Build Date: 18 May 2019                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -40,18 +40,22 @@ exit();
 }
 
 require_once('helpers.php');
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 // Get the module config
 $conf = get_module_conf();
 $tc_field = $conf["tc_field"];
 $birthyear_field = $conf["birthyear_field"];
+$verification_status_field = $conf["verification_status_field"];
 $country_check = $conf["only_turkish"];
 $unique_identity = $conf["unique_identity"];
+$verification_status_control = $conf["verification_status_control"];
 $unique_identity_message = $conf["unique_identity_message"];
 $error_message = $conf["error_message"];
+$verification_about = $conf["verification_about"];
 $via_proxy = $conf["via_proxy"];
 
-add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $country_check, $unique_identity, $unique_identity_message, $error_message, $via_proxy)
+add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $verification_status_field, $country_check, $unique_identity, $verification_status_control, $unique_identity_message, $error_message, $via_proxy, $user_id)
 {
     if ($_SERVER["SCRIPT_NAME"] == '/creditcard.php')
     {
@@ -107,16 +111,19 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 		
 		function validate_unique_identity($user_id, $tc_field, $form_tckimlik)
 		{
-			if(!isset($user_id) || empty($user_id) || !is_int($user_id))
+			if(!isset($user_id) || empty($user_id) || !is_numeric($user_id))
 			$user_id = 0;
 			
-			$sql_ui_count = "select COUNT(*) as total from `tblcustomfieldsvalues` where not relid=" . $user_id . " AND fieldid=" . $tc_field . " AND value='" . $form_tckimlik . "'";
-			$sql_ui_count_query = mysql_query($sql_ui_count);
+			$check_unique_identity = Capsule::table('tblcustomfieldsvalues')
+				->where('relid', '!=', $user_id)
+				->where('fieldid', '=', $tc_field)
+				->where('value', '=', $form_tckimlik)
+				->count();
 		
-			if(mysql_fetch_assoc($sql_ui_count_query)['total'] == 0)
-			return true;
-			else
-			return false;
+if($check_unique_identity == 0)
+	return true;
+else
+	return false;
 		}
 		
 		$user_id = $vars['userid'];
@@ -124,10 +131,16 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 		if(validate_unique_identity($user_id, $tc_field, $form_tckimlik) == true)
 		{
 		
-        $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy);
+        $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy, $user_id);
         logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy), $validation, $validationn);
 
-        if ($validation !== true)
+		if($validation === true && $verification_status_control == "on") {
+				Capsule::table('tblcustomfieldsvalues')
+					->where("relid", "=", $user_id)
+					->where("fieldid", "=", $verification_status_field)
+					->update(array("value"=>"on"));
+		}
+        elseif ($validation !== true)
         {
             return $validation;
         }
@@ -139,7 +152,7 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 		}
 		else
 		{
-			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy);
+			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy, $user_id);
         logModuleCall('tckimlik','validation',array($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy), $validation, $validationn);
 
 			if ($validation !== true)
@@ -149,4 +162,42 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 		}
 		
     }
+});
+
+add_hook('ClientAreaPage', 1, function ($vars) use ($country_check, $verification_status_field, $verification_status_control) {
+	
+if($verification_status_control == "on") {
+$client_id  = $_SESSION['uid'];
+if (empty($client_id))
+{
+	return;
+}
+
+$user_country = Capsule::table('tblclients')
+		->where("id", "=", $client_id)
+		->value('country');
+		
+		if (($country_check == "on" && $user_country == "TR") || $country_check == "") {
+
+global $CONFIG;
+$URL = $CONFIG['SystemURL'] . "/" . "index.php?m=tckimlik&page=verification_about";
+
+$user_verification = Capsule::table('tblcustomfieldsvalues')
+		->where("relid", "=", $client_id)
+		->where("fieldid", "=", $verification_status_field)
+		->value('value');
+	
+if($user_verification != "on") {
+	
+	$filename = $vars['filename'];
+if (($filename == "clientarea" && $_GET['action'] == "details") || ($filename == "index" && $_GET['m'] == "tckimlik") || $filename == "supporttickets" || $filename == "submitticket" || $filename == "viewticket") {
+
+}
+else {
+	header("Location: " . $URL);
+	exit;
+}
+}
+}
+}
 });
