@@ -40,20 +40,20 @@ Modülün çalışması için 2 tane "custom field" oluşturmanız gerekiyor. Bu
 Kurulumu tamamlamak için WHMCS admin sayfanızdan "Setup -> Addon Modules" sayfasına gidip modülü etkinleştirin. Etkinleştirdikten sonra "Configure" butonuna tıklayarak TC Kimlik NO ve Doğum Yılı için oluşturduğunuz "Custom Field"ları seçmelisiniz.
 
 ## Özel Müşteri Alanları ##
-T.C. Kimlik Numarası alanı;\s\s
-Alan İsmi: T.C. Kimlik Numarası\s\s
-Alan Türü: Metin Kutusu\s\s
-Seçenekler: Zorunlu alan, Sipariş formunda göster\s\s
-\s\s
-Doğum yılı alanı;\s\s
-Alan İsmi: Doğum Yılı\s\s
-Alan Türü: Metin Kutusu\s\s
-Seçenekler: Zorunlu alan, Sipariş formunda göster\s\s
-\s\s
-T.C. Kimlik doğrulama durumu alanı;\s\s
-Alan İsmi: T.C. Kimlik Doğrulama Durumu\s\s
-Alan Türü: Onay Kutusu\s\s
-Seçenekler: Sadece Admin\s\s
+*T.C. Kimlik Numarası alanı;*
+- Alan İsmi: T.C. Kimlik Numarası
+- Alan Türü: Metin Kutusu
+- Seçenekler: Zorunlu alan, Sipariş formunda göster
+
+*Doğum yılı alanı;*
+- Alan İsmi: Doğum Yılı
+- Alan Türü: Metin Kutusu
+- Seçenekler: Zorunlu alan, Sipariş formunda göster
+
+*T.C. Kimlik doğrulama durumu alanı;*
+- Alan İsmi: T.C. Kimlik Doğrulama Durumu
+- Alan Türü: Onay Kutusu
+- Seçenekler: Sadece Admin
 
 ## Ekran Görüntüleri ##
 ![Ekran görüntüsü 1](https://github.com/aponkral/whmcs-tckimlik/raw/master/screenshoots/whmcs-tckimlik-Screenshot-1.png "Ekran görüntüsü 1")
@@ -126,20 +126,20 @@ Module needs two Custom Fields to be created in WHMCS. One should hold the TNI d
 To complete the installation, you should go to your WHMCS admin area and click "Activate" in your "Setup -> Addon Modules" page. Then click "Configure" and select the appropriate fields you created before.
 
 ## Custom Client Fields ##
-Turkish Identity Number field;\s\s
-Field Name: Turkish Identity Number\s\s
-Field Type: Text Box\s\s
-Options: Required field, Show on order form\s\s
-\s\s
-Birthyear field;\s\s
-Field Name: Birthyear\s\s
-Field Type: Text Box\s\s
-Options: Required field, Show on order form\s\s
-\s\s
-Turkish Identity verification status field;\s\s
-Field Name: Turkish Identity Verification Satus\s\s
-Field Type: Tick Box\s\s
-Options: Admin Only\s\s
+*Turkish Identity Number field;*
+- Field Name: Turkish Identity Number
+- Field Type: Text Box
+- Options: Required field, Show on order form
+
+*Birthyear field;*
+- Field Name: Birthyear
+- Field Type: Text Box
+- Options: Required field, Show on order form
+
+*Turkish Identity verification status field;*
+- Field Name: Turkish Identity Verification Satus
+- Field Type: Tick Box
+- Options: Admin Only
 
 ## Screenshoots ##
 ![Screenshot 1](https://github.com/aponkral/whmcs-tckimlik/raw/master/screenshoots/whmcs-tckimlik-Screenshot-1.png "Screenshot 1")
