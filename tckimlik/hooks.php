@@ -144,7 +144,7 @@ if($check_verification_status == 1) {
 	Capsule::table('tblcustomfieldsvalues')
 			->where("relid", "=", $user_id)
 			->where("fieldid", "=", $verification_status_field)
-			->update(["value"=>"on"]);
+			->update(["value"=>"on", "updated_at"=>date("Y-m-d H:i:s", time())]);
 }
 else {
 $insert_verification_status = [
