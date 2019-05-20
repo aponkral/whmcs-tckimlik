@@ -134,7 +134,10 @@ else
 		{
 		
         $validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy);
-        logModuleCall('tckimlik','validation',[$form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy], $validation, $validationn);
+        if($validation === true)
+	        logModuleCall('tckimlik','validation',["tc_kimlik_numarasi"=>$form_tckimlik, "dogum_yili"=>$form_birthyear, "isim"=>$vars["firstname"], "soyisim"=>$vars["lastname"], "sonuc"=>"Başarılı", "vekil_durumu"=>($via_proxy == "on" ? "etkin" : "pasif")], $validation, $validationn);
+        else
+	        logModuleCall('tckimlik','validation',["tc_kimlik_numarasi"=>$form_tckimlik, "dogum_yili"=>$form_birthyear, "isim"=>$vars["firstname"], "soyisim"=>$vars["lastname"], "sonuc"=>$error_message, "vekil_durumu"=>($via_proxy == "on" ? "etkin" : "pasif")], $validation, $validationn);
 
 		if($validation === true && $verification_status_control == "on" && $user_id > 0) {
 			$check_verification_status = Capsule::table('tblcustomfieldsvalues')
@@ -173,7 +176,10 @@ $insert_verification_status = [
 		else
 		{
 			$validation = validate_tc($form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy);
-        logModuleCall('tckimlik','validation',[$form_tckimlik, $form_birthyear, $vars["firstname"], $vars["lastname"], $error_message, $via_proxy], $validation, $validationn);
+        if($validation === true)
+	        logModuleCall('tckimlik','validation',["tc_kimlik_numarasi"=>$form_tckimlik, "dogum_yili"=>$form_birthyear, "isim"=>$vars["firstname"], "soyisim"=>$vars["lastname"], "sonuc"=>"Başarılı", "vekil_durumu"=>($via_proxy == "on" ? "etkin" : "pasif")], $validation, $validationn);
+        else
+	        logModuleCall('tckimlik','validation',["tc_kimlik_numarasi"=>$form_tckimlik, "dogum_yili"=>$form_birthyear, "isim"=>$vars["firstname"], "soyisim"=>$vars["lastname"], "sonuc"=>$error_message, "vekil_durumu"=>($via_proxy == "on" ? "etkin" : "pasif")], $validation, $validationn);
 
 			if ($validation !== true)
 			{
