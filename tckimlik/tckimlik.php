@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.2.0 (1.2.0release.1)                                      *
-// * BuildId: 20190519.001                                                  *
-// * Build Date: 19 May 2019                                               *
+// * Version: 1.2.1 (1.2.1release.1)                                      *
+// * BuildId: 20190520.001                                                  *
+// * Build Date: 20 May 2019                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -47,7 +47,7 @@ function tckimlik_config() {
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
     "premium" => true,
-    "version" => "1.2.0",
+    "version" => "1.2.1",
     "author" => "APONKRAL",
     "link" => "https://aponkral.net/",
     "language" => "turkish",
@@ -56,19 +56,19 @@ function tckimlik_config() {
                 "FriendlyName" => "TC Kimlik Özel Alanı",
                 "Type" => "dropdown",
                 "Options" => $db_field_names,
-                "Description" => "Özel alanlarınız arasından TC Kimlik için olanı seçin",
+                "Description" => "Özel alanlarınız arasından TC Kimlik için olanı seçin.",
             ],
             "birthyear_field" => [
                 "FriendlyName" => "Doğum yılı alanı",
                 "Type" => "dropdown",
                 "Options" => $db_field_names,
-                "Description" => "Özel alanlarınız arasından doğum yılı için olanı seçin",
+                "Description" => "Özel alanlarınız arasından doğum yılı için olanı seçin.",
             ],
             "verification_status_field" => [
                 "FriendlyName" => "Doğrulama Durumu Kontrolü",
                 "Type" => "dropdown",
                 "Options" => $db_field_names,
-                "Description" => "Özel alanlarınız arasından T.C. Kimlik Doğrulama Durumu için olanı seçin",
+                "Description" => "Özel alanlarınız arasından T.C. Kimlik Doğrulama Durumu için olanı seçin. *Bu alan T.C. Kimlik Doğrulama Kontrolü aktifse ayarlanmalıdır.",
             ],
             "only_turkish" => [
                 "FriendlyName" => "Ülke kontrolü",
@@ -88,11 +88,17 @@ function tckimlik_config() {
                 "Size" => "25",
                 "Description" => "T.C. Kimlik doğrulaması yapmayan müşterilere bilgi mesajı gösterir.",
             ],
+            "support_ticket_access" => [
+                "FriendlyName" => "Destek Bileti Erişimi",
+                "Type" => "yesno",
+                "Size" => "25",
+                "Description" => "T.C. Kimlik doğrulaması yapmayan müşterilerin destek bileti oluşturması, görüntülemesi veya güncellemesine izin veriyorsanız etkinleştirin. *Bu özellik <b>T.C. Kimlik Doğrulama Kontrolü</b> ile birlikte çalışabilir.",
+            ],
 			"unique_identity_message" => [
                 "FriendlyName" => "Benzersiz Kimlik Mesajı",
                 "Type" => "text",
                 "Size" => 25,
-                "Description" => "Başka kullanıcıya ait olan bir T.C. Kimlik Numarası ile yeni kaydı ve profil güncellemeyi engeller.",
+                "Description" => "Başka kullanıcıya ait olan bir T.C. Kimlik Numarası ile yeni kaydı ve profil güncellemeyi engeller. *Bu özellik <b>Benzersiz Kimlik</b> ile birlikte çalışabilir.",
                 "Default" => "Bu T.C. Kimlik Numarası ile kayıtlı bir kullanıcı var.",
             ],
             "error_message" => [
@@ -106,10 +112,17 @@ function tckimlik_config() {
                 "FriendlyName" => "T.C. Kimlik Doğrulama Bilgi Mesajı",
                 "Type" => "textarea",
                 "Size" => 25,
-                "Description" => "T.C. Kimlik Numarasını doğrulamayan müşteriye gösterilecek bilgi yazısı.",
+                "Description" => "T.C. Kimlik Numarasını doğrulamayan müşteriye gösterilecek bilgi yazısı. *Bu özellik <b>T.C. Kimlik Doğrulama Kontrolü</b> ile birlikte çalışabilir.",
                 "Default" => "Artık T.C. Kimlik doğrulaması yapmaktayız. Bu nedenle henüz T.C. Kimlik numarası doğrulaması yapmadıysanız müşteri bilgilerinizi güncellemeniz gerekmektedir.
 
 T.C. Kimlik doğrulaması yapmayan müşterilerimiz müşteri panelinde bilgi güncellemek dışında işlem yapamazlar.",
+            ],
+            "verification_about_link_name" => [
+                "FriendlyName" => "T.C. Kimlik Doğrulama Bilgi Mesajı Bağlantı İsmi",
+                "Type" => "text",
+                "Size" => 25,
+                "Description" => "T.C. Kimlik Numarasını doğrulamayan müşteriye gösterilecek bilgi yazısındaki bağlantı ismi.",
+                "Default" => "Kullanıcı Bilgilerimi Düzenle",
             ],
             "via_proxy" => [
                 "FriendlyName" => "Vekil Sunucu Kullan",
@@ -219,6 +232,7 @@ echo "<br /></div>";
 function tckimlik_clientarea($vars) {
 $conf = get_module_conf();
 $verification_about = $conf["verification_about"];
+$verification_about_link_name = $conf["verification_about_link_name"];
 
 global $CONFIG;
 $clientarea_details_link = $CONFIG['SystemURL'] . "/" . "clientarea.php?action=details";
@@ -235,6 +249,7 @@ if($_GET['page'] == "verification_about") {
 		'vars' => [
 			'description' => $verification_about,
 			'clientarea_details_link' => $clientarea_details_link,
+			'clientarea_details_link_name' => $verification_about_link_name,
 		],
 	];
 }

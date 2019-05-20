@@ -3,9 +3,9 @@
 // *                                                                       *
 // * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
 // * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.2.0 (1.2.0release.1)                                      *
-// * BuildId: 20190519.001                                                  *
-// * Build Date: 19 May 2019                                               *
+// * Version: 1.2.1 (1.2.1release.1)                                      *
+// * BuildId: 20190520.001                                                  *
+// * Build Date: 20 May 2019                                               *
 // *                                                                       *
 // *************************************************************************
 // *                                                                       *
@@ -50,9 +50,11 @@ $verification_status_field = $conf["verification_status_field"];
 $country_check = $conf["only_turkish"];
 $unique_identity = $conf["unique_identity"];
 $verification_status_control = $conf["verification_status_control"];
+$support_ticket_access = $conf["support_ticket_access"];
 $unique_identity_message = $conf["unique_identity_message"];
 $error_message = $conf["error_message"];
 $verification_about = $conf["verification_about"];
+$verification_about_link_name = $conf["verification_about_link_name"];
 $via_proxy = $conf["via_proxy"];
 
 add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $verification_status_field, $country_check, $unique_identity, $verification_status_control, $unique_identity_message, $error_message, $via_proxy)
@@ -182,7 +184,7 @@ $insert_verification_status = [
     }
 });
 
-add_hook('ClientAreaPage', 1, function ($vars) use ($country_check, $verification_status_field, $verification_status_control) {
+add_hook('ClientAreaPage', 1, function ($vars) use ($country_check, $verification_status_field, $verification_status_control, $support_ticket_access) {
 	
 if($verification_status_control == "on") {
 $client_id  = $_SESSION['uid'];
@@ -206,9 +208,13 @@ $user_verification = Capsule::table('tblcustomfieldsvalues')
 		->value('value');
 	
 if($user_verification != "on") {
-	
 	$filename = $vars['filename'];
-if (($filename == "clientarea" && $_GET['action'] == "details") || ($filename == "index" && $_GET['m'] == "tckimlik") || $filename == "supporttickets" || $filename == "submitticket" || $filename == "viewticket") {
+if($support_ticket_access == "on" && ($filename == "supporttickets" || $filename == "submitticket" || $filename == "viewticket"))
+	$support_tickets_access = true;
+else
+	$support_tickets_access = false;
+	
+if (($filename == "clientarea" && $_GET['action'] == "details") || ($filename == "index" && $_GET['m'] == "tckimlik") || $support_tickets_access) {
 
 }
 else {
