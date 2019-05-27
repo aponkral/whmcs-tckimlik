@@ -1,37 +1,18 @@
 <?php
-// *************************************************************************
-// *                                                                       *
-// * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
-// * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.2.1 (1.2.1release.1)                                      *
-// * BuildId: 20190520.001                                                  *
-// * Build Date: 20 May 2019                                               *
-// *                                                                       *
-// *************************************************************************
-// *                                                                       *
-// * Email: bilgi[@]aponkral.net                                                 *
-// * Website: https://aponkral.net                                         *
-// *                                                                       *
-// *************************************************************************
-// *                                                                       *
-// * This software is furnished under a license and may be used and copied *
-// * only  in  accordance  with  the  terms  of such  license and with the *
-// * inclusion of the above copyright notice.  This software  or any other *
-// * copies thereof may not be provided or otherwise made available to any *
-// * other person.  No title to and  ownership of the  software is  hereby *
-// * transferred.                                                          *
-// *                                                                       *
-// * You may not reverse  engineer, decompile, defeat  license  encryption *
-// * mechanisms, or  disassemble this software product or software product *
-// * license.  APONKRAL may terminate this license if you don't *
-// * comply with any of the terms and conditions set forth in our end user *
-// * license agreement (EULA).  In such event,  licensee  agrees to return *
-// * licensor  or destroy  all copies of software  upon termination of the *
-// * license.                                                              *
-// *                                                                       *
-// * Please see the EULA file for the full End User License Agreement.     *
-// *                                                                       *
-// *************************************************************************
+/**
+	* WHMCS T.C. Kimlik Doğrulama Modülü
+	*
+	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
+	* English: Turkish Identity Number (TIN) verification module for WHMCS.
+	* Version: 1.2.2 (1.2.2release.1)
+	* BuildId: 20190527.001
+	* Build Date: 27 May 2019
+	* Email: bilgi[@]aponkral.net
+	* Website: https://aponkral.net
+	* 
+	*
+	* @license Apache License 2.0
+	*/
 // Her şeyi sana yazdım!.. Her şeye seni yazdım!.. * Sena AÇIK
 
 if (!defined("WHMCS")) {
@@ -57,7 +38,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
  * @return array firstname and lastname keys with first/lastname values
  */
 
-function find_user_details($email)
+function tckimlik_find_user_details($email)
 {
     $retArr = [];
     $details = Capsule::table('tblclients')
@@ -81,7 +62,7 @@ function find_user_details($email)
  * @return array field names concat with ids - format: "id|name"
  */
 
-function get_custom_fields()
+function tckimlik_get_custom_fields()
 {
     $field_names = Capsule::table('tblcustomfields')->select('fieldname', 'id')
                                                     ->get();
@@ -122,7 +103,7 @@ if (!function_exists('str_putcsv')) {
  * @return array Module configuration fields
  */
 
-function get_module_conf()
+function tckimlik_get_module_conf()
 {
     $retVal = [];
     $exclude_fields = ['version', 'access',];
@@ -148,7 +129,7 @@ function get_module_conf()
  * @return str
  */
 
-function strtouppertr($str)
+function tckimlik_strtouppertr($str)
 {
     $str = str_replace("ç", "Ç", $str);
 	$str = str_replace("ğ", "Ğ", $str);
@@ -223,8 +204,8 @@ if(isTcKimlik($tc)) {
     $error = [];
 
     // Convert name and surname to uppercase and year to an int value
-    $name = strtouppertr($name);
-    $surname = strtouppertr($surname);
+    $name = tckimlik_strtouppertr($name);
+    $surname = tckimlik_strtouppertr($surname);
     $year = intval($year);
     
     $apiurl = "https://api.aponkral.com/tckimlik-api/?name=" . $name . "&surname=" . $surname . "&tin=". $tc . "&birthyear=" . $year;
@@ -278,8 +259,8 @@ if(isTcKimlik($tc)) {
     $error = [];
 
     // Convert name and surname to uppercase and year to an int value
-    $name = strtouppertr($name);
-    $surname = strtouppertr($surname);
+    $name = tckimlik_strtouppertr($name);
+    $surname = tckimlik_strtouppertr($surname);
     $year = intval($year);
 
     	$request = '<?xml version="1.0" encoding="utf-8"?>

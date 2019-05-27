@@ -1,37 +1,18 @@
 <?php
-// *************************************************************************
-// *                                                                       *
-// * WHMCS TCKimlik - The Complete Turkish Identity Validation, Verify & Unique Identity Module    *
-// * Copyright (c) APONKRAL. All Rights Reserved,                         *
-// * Version: 1.2.1 (1.2.1release.1)                                      *
-// * BuildId: 20190520.001                                                  *
-// * Build Date: 20 May 2019                                               *
-// *                                                                       *
-// *************************************************************************
-// *                                                                       *
-// * Email: bilgi[@]aponkral.net                                                 *
-// * Website: https://aponkral.net                                         *
-// *                                                                       *
-// *************************************************************************
-// *                                                                       *
-// * This software is furnished under a license and may be used and copied *
-// * only  in  accordance  with  the  terms  of such  license and with the *
-// * inclusion of the above copyright notice.  This software  or any other *
-// * copies thereof may not be provided or otherwise made available to any *
-// * other person.  No title to and  ownership of the  software is  hereby *
-// * transferred.                                                          *
-// *                                                                       *
-// * You may not reverse  engineer, decompile, defeat  license  encryption *
-// * mechanisms, or  disassemble this software product or software product *
-// * license.  APONKRAL may terminate this license if you don't *
-// * comply with any of the terms and conditions set forth in our end user *
-// * license agreement (EULA).  In such event,  licensee  agrees to return *
-// * licensor  or destroy  all copies of software  upon termination of the *
-// * license.                                                              *
-// *                                                                       *
-// * Please see the EULA file for the full End User License Agreement.     *
-// *                                                                       *
-// *************************************************************************
+/**
+	* WHMCS T.C. Kimlik Doğrulama Modülü
+	*
+	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
+	* English: Turkish Identity Number (TIN) verification module for WHMCS.
+	* Version: 1.2.2 (1.2.2release.1)
+	* BuildId: 20190527.001
+	* Build Date: 27 May 2019
+	* Email: bilgi[@]aponkral.net
+	* Website: https://aponkral.net
+	* 
+	*
+	* @license Apache License 2.0
+	*/
 // Her şeyi sana yazdım!.. Her şeye seni yazdım!.. * Sena AÇIK
 
 if (!defined("WHMCS")) {
@@ -43,7 +24,7 @@ require_once('helpers.php');
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 // Get the module config
-$conf = get_module_conf();
+$conf = tckimlik_get_module_conf();
 $tc_field = $conf["tc_field"];
 $birthyear_field = $conf["birthyear_field"];
 $verification_status_field = $conf["verification_status_field"];
@@ -66,12 +47,12 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
 
     if (isset($vars["save"]))
     {
-        $user_details = find_user_details($vars["email"]);
+        $user_details = tckimlik_find_user_details($vars["email"]);
         
-        if (!isset($vars["userid"]))
-        {
-            $vars["userid"] = $user_details["id"];
-        }
+		if(isset($user_details["id"]) && !empty($user_details["id"]) && is_numeric($user_details["id"]))
+			$vars["userid"] = $user_details["id"];
+		else
+			$vars["userid"] = $_SESSION['uid'];
 
         if (!isset($vars["firstname"]))
         {
