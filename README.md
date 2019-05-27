@@ -43,12 +43,12 @@ Kurulumu tamamlamak için WHMCS admin sayfanızdan "Setup -> Addon Modules" sayf
 *T.C. Kimlik Numarası alanı;*
 - Alan İsmi: T.C. Kimlik Numarası
 - Alan Türü: Metin Kutusu
-- Seçenekler: Zorunlu alan, Sipariş formunda göster
+- Seçenekler: Sipariş formunda göster
 
 *Doğum yılı alanı;*
 - Alan İsmi: Doğum Yılı
 - Alan Türü: Metin Kutusu
-- Seçenekler: Zorunlu alan, Sipariş formunda göster
+- Seçenekler: Sipariş formunda göster
 
 *T.C. Kimlik doğrulama durumu alanı;*
 - Alan İsmi: T.C. Kimlik Doğrulama Durumu
@@ -129,12 +129,12 @@ To complete the installation, you should go to your WHMCS admin area and click "
 *Turkish Identity Number field;*
 - Field Name: Turkish Identity Number
 - Field Type: Text Box
-- Options: Required field, Show on order form
+- Options: Show on order form
 
 *Birthyear field;*
 - Field Name: Birthyear
 - Field Type: Text Box
-- Options: Required field, Show on order form
+- Options: Show on order form
 
 *Turkish Identity verification status field;*
 - Field Name: Turkish Identity Verification Satus
