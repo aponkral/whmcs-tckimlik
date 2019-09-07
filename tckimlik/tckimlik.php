@@ -4,9 +4,9 @@
 	*
 	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
 	* English: Turkish Identity Number (TIN) verification module for WHMCS.
-	* Version: 1.2.2 (1.2.2release.1)
-	* BuildId: 20190527.001
-	* Build Date: 27 May 2019
+	* Version: 1.2.3 (1.2.3release.1)
+	* BuildId: 20190907.001
+	* Build Date: 07 Sep 2019
 	* Email: bilgi[@]aponkral.net
 	* Website: https://aponkral.net
 	* 
@@ -28,7 +28,7 @@ function tckimlik_config() {
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
     "premium" => true,
-    "version" => "1.2.2",
+    "version" => "1.2.3",
     "author" => "APONKRAL",
     "link" => "https://aponkral.net/",
     "language" => "turkish",
@@ -109,7 +109,7 @@ T.C. Kimlik doğrulaması yapmayan müşterilerimiz müşteri panelinde bilgi g�
                 "FriendlyName" => "Vekil Sunucu Kullan",
                 "Type" => "yesno",
                 "Size" => "25",
-                "Description" => "T.C. Kimlik Bilgilerini APONKRAL API aracılığı ile doğrula. (Daha hızlı ve daha güvenli.)",
+                "Description" => "T.C. Kimlik Bilgilerini Aponkral API aracılığı ile doğrula. (Daha hızlı ve daha güvenli.)",
             ],
         ]
     ];
@@ -198,7 +198,7 @@ echo "<table class=\"table table-bordered\">
 					</tr>
 					<tr>
 						<td><b style=\"color: #212121;\">Modülü geliştiren</b></td>
-						<td><a href=\"" . $author_link . "\" target=\"_blank\" title=\"APONKRAL Blog\" style=\"color: #2196F3;\">" . $module_author . "</a></td>
+						<td><a href=\"" . $author_link . "\" target=\"_blank\" title=\"APONKRAL\" style=\"color: #2196F3;\">" . $module_author . "</a></td>
 					</tr>
 					<tr>
 						<td class=\"text-center\" colspan=\"2\">" . $is_module_up_to_date . "</td>

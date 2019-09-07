@@ -4,9 +4,9 @@
 	*
 	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
 	* English: Turkish Identity Number (TIN) verification module for WHMCS.
-	* Version: 1.2.2 (1.2.2release.1)
-	* BuildId: 20190527.001
-	* Build Date: 27 May 2019
+	* Version: 1.2.3 (1.2.3release.1)
+	* BuildId: 20190907.001
+	* Build Date: 07 Sep 2019
 	* Email: bilgi[@]aponkral.net
 	* Website: https://aponkral.net
 	* 

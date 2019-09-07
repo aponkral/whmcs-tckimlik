@@ -4,9 +4,9 @@
 	*
 	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
 	* English: Turkish Identity Number (TIN) verification module for WHMCS.
-	* Version: 1.2.2 (1.2.2release.1)
-	* BuildId: 20190527.001
-	* Build Date: 27 May 2019
+	* Version: 1.2.3 (1.2.3release.1)
+	* BuildId: 20190907.001
+	* Build Date: 07 Sep 2019
 	* Email: bilgi[@]aponkral.net
 	* Website: https://aponkral.net
 	* 
@@ -195,10 +195,34 @@ return true;
 }
 
 if(isTcKimlik($tc)) {
+
+function name_validation($name) {
+if(preg_match("/^([a-zA-ZöçşığüÖÇŞİĞÜ' ]+)$/",$name))
+	return true;
+else
+ 	return false;
+}
+if (name_validation($name) === false || name_validation($surname) === false) {
+	return "İsim veya soyisim geçersiz";
+}
+
 	
 	if( $via_proxy == "on" ) {
     
     if(function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') && function_exists('curl_getinfo') && function_exists('curl_error') && function_exists('curl_close')) {
+
+$tckimlik_api_error_messages = [
+1001 => "Geçerli bir json verisi gönderilmedi (hata kodu: 1001)",
+1002 => "Json parametreleri eksik (hata kodu: 1002)",
+1003 => "T.C. kimlik numarası standartlara uymamaktadır.",
+1004 => "T.C. kimlik numarası geçerli bir sayı değil ve doğum yılı 1900 veya daha fazla olabilir.",
+1005 => "İsim veya soyisim geçersiz",
+2001 => "NVI Api geçerli bir sonuç vermedi. (hata kodu: 2001)",
+5001 => "Curl işlevinde bir sorun var. Bu hatayı görürseniz, lütfen bize ulaşın. (hata kodu 5001)",
+5002 => "Curl_exec işlevinde bir sorun var. Bu hatayı görürseniz, lütfen bize ulaşın. (hata kodu: 5002)",
+5003 => "Api sunucusunda önbelleğe yazma hatasıdır. Bu hatayı görürseniz, lütfen bize ulaşın. (hata kodu 5003)",
+5004 => "Api sunucusunda önbellekten okuma hatasıdır. Bu hatayı görürseniz, lütfen bize ulaşın. (hata kodu 5004)"
+];
 	
 	$curl = curl_init();
     $error = [];
@@ -208,10 +232,11 @@ if(isTcKimlik($tc)) {
     $surname = tckimlik_strtouppertr($surname);
     $year = intval($year);
     
-    $apiurl = "https://api.aponkral.com/tckimlik-api/?name=" . $name . "&surname=" . $surname . "&tin=". $tc . "&birthyear=" . $year;
+    $tckimlik_apiurl = "https://api.aponkral.com/tckimlik-api/v1.1/";
+    $tckimlik_api_data = json_encode(["tin" => $tc, "name" => $name, "surname" => $surname, "birthyear" => $year]);
 
     curl_setopt_array($curl, [
-      CURLOPT_URL => $apiurl,
+      CURLOPT_URL => $tckimlik_apiurl,
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_SSL_VERIFYHOST => true,
       CURLOPT_ENCODING => "",
@@ -220,27 +245,39 @@ if(isTcKimlik($tc)) {
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_HTTPHEADER => [
         "cache-control: no-cache",
-        "content-type: text/plain; charset=utf-8",
+        "content-type: application/json; charset=utf-8",
         "user-agent: APONKRAL.APPS/WHMCS-T.C.Kimlik.Dogrulama",
         "api-connecting-host: " . $_SERVER['HTTP_HOST'],
       ],
+      CURLOPT_POSTFIELDS => $tckimlik_api_data,
     ]);
     $response = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
 
-    if ($response)
-    {
-        
-        if ($response == "true")
-        {
-            return true;
-        } elseif ($response == "false") {
-            $error[] = $error_message;
-        } else {
-            $error[] = $error_message;
-        }
-    }
+	if ($response)
+	{
+		if ($response === null && json_last_error() !== JSON_ERROR_NONE) {
+			$error[] = "Api geçerli bir json verisi ile yanıt vermedi. Lütfen modül geliştiricisiyle iletişime geçin.";
+		} else {
+		$response = json_decode($response, true);
+		if ($response['status'] == "success") {
+			if ($response['verification'] == "true")
+			{
+				return true;
+			} elseif ($response['verification'] == "false") {
+				$error[] = $error_message;
+			} else {
+				$error[] = $error_message;
+			}
+		}
+		else if ($response['status'] == "error") {
+		$error[] = "T.C. Kimlik Doğrulama: " . $tckimlik_api_error_messages[$response['error_code']];
+		} else {
+		$error[] = "T.C. Kimlik Doğrulama: Bilinmeyen bir hata oluştu.";
+		}
+		}
+	}
 
     if ($err)
     {
