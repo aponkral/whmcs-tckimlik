@@ -4,9 +4,9 @@
 	*
 	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
 	* English: Turkish Identity Number (TIN) verification module for WHMCS.
-	* Version: 1.2.3 (1.2.3release.1)
-	* BuildId: 20190907.001
-	* Build Date: 07 Sep 2019
+	* Version: 1.2.4 (1.2.4release.1)
+	* BuildId: 20190908.001
+	* Build Date: 08 Sep 2019
 	* Email: bilgi[@]aponkral.net
 	* Website: https://aponkral.net
 	* 
@@ -179,19 +179,40 @@ function validate_tc($tc, $year, $name, $surname, $error_message, $via_proxy)
 	]
 	) == $year) {
 
-function isTcKimlik($tc)  
-{  
-if(strlen($tc) < 11 || strlen($tc) > 11){ return false; }  
-if($tc[0] == '0'){ return false; }  
-$plus = ($tc[0] + $tc[2] + $tc[4] + $tc[6] + $tc[8]) * 7;  
-$minus = $plus - ($tc[1] + $tc[3] + $tc[5] + $tc[7]);  
-$mod = $minus % 10;  
-if($mod != $tc[9]){ return false; }  
-$all = '';  
-for($i = 0 ; $i < 10 ; $i++){ $all += $tc[$i]; }  
-if($all % 10 != $tc[10]){ return false; }  
-  
-return true;  
+function isTcKimlik($tin)
+{			
+	if (strlen($tin) == 11)
+	{
+		$digit = str_split($tin);
+		$digit10_test=fmod(($digit[0] + $digit[2] + $digit[4] + $digit[6] + $digit[8]) * 7  - ($digit[1] + $digit[3] + $digit[5] + $digit[7]), 10);
+		$digit11_test = fmod($digit[0] + $digit[1] + $digit[2] + $digit[3] + $digit[4] + $digit[5] + $digit[6] + $digit[7] + $digit[8] + $digit[9], 10);
+	}
+
+	if (strlen($tin) != 11)
+		{
+			$sonuc=false;
+		}
+	elseif ($digit[0] == 0)
+		{
+			$sonuc=false;
+		}
+	elseif (!is_numeric($digit[0]) or !is_numeric($digit[1]) or !is_numeric($digit[2]) or  !is_numeric($digit[3]) or !is_numeric($digit[4]) or !is_numeric($digit[5]) or !is_numeric($digit[6]) or !is_numeric($digit[7]) or !is_numeric($digit[8]) or  !is_numeric($digit[9]) or !is_numeric($digit[10]))
+	{
+		$sonuc=false;		
+	}
+	elseif ($digit10_test != $digit[9])
+	{
+		$sonuc=false;
+	}
+	elseif ($digit11_test != $digit[10])
+	{
+		$sonuc=false;
+	}
+	else
+	{
+		$sonuc=true;
+	}
+	return $sonuc;	
 }
 
 if(isTcKimlik($tc)) {
