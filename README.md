@@ -7,7 +7,7 @@ WHMCS için Ücretsiz T.C. Kimlik numarası doğrulama modülü
 - WHMCS >= 6.0
 - PHP >= 5.4.0
 
-WHMCS 7.7.1 ve PHP 7.3 ile de testleri gerçekleştirilmiştir.
+WHMCS 7.8.2 ve PHP 7.3 ile de testleri gerçekleştirilmiştir.
 
 WHMCS'nin minimum gereksinimlerini görmek için https://docs.whmcs.com/System_Requirements adresine göz atabilirsiniz.
 
@@ -92,7 +92,7 @@ This module offers an official way to validate Turkish Identification Numbers (T
 - WHMCS >= 6.0
 - PHP >= 5.4.0
 
-Works with WHMCS 7.7.1 and PHP 7.3, too.
+Works with WHMCS 7.8.2 and PHP 7.3, too.
 
 For the latest WHMCS minimum system requirements, please refer to
 https://docs.whmcs.com/System_Requirements
