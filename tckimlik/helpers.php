@@ -4,9 +4,9 @@
 	*
 	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
 	* English: Turkish Identity Number (TIN) verification module for WHMCS.
-	* Version: 1.2.4 (1.2.4release.1)
-	* BuildId: 20190908.001
-	* Build Date: 08 Sep 2019
+	* Version: 1.2.5 (1.2.5release.1)
+	* BuildId: 20200108.001
+	* Build Date: 08 Jan 2020
 	* Email: bilgi[@]aponkral.net
 	* Website: https://aponkral.net
 	* 
@@ -141,6 +141,32 @@ function tckimlik_strtouppertr($str)
 	$str = strtoupper($str);
 	$str = trim($str);
 	return $str;
+}
+
+function identity_change_check($userid, $tin_field, $birthyear_field, $verification_status_field, $form_tin, $form_name, $form_surname, $form_birthyear)
+{
+	$verification_status_count = Capsule::table('tblcustomfieldsvalues')->where('relid', '=', $userid)->where('fieldid', '=', $verification_status_field)->where('value', '=', "on")->count();
+
+	if ($verification_status_count != 0)
+	{
+		$tin_value = Capsule::table('tblcustomfieldsvalues')->where('relid', '=', $userid)->where('fieldid', '=', $tin_field)->value('value');
+		if ($tin_value != $form_tin)
+			return true;
+
+		$name_value = Capsule::table('tblclients')->where("id", "=", $userid)->value('firstname');
+		if ($name_value != $form_name)
+			return true;
+
+		$surname_value = Capsule::table('tblclients')->where("id", "=", $userid)->value('lastname');
+		if ($surname_value != $form_surname)
+			return true;
+
+		$birthyear_value = Capsule::table('tblcustomfieldsvalues')->where('relid', '=', $userid)->where('fieldid', '=', $birthyear_field)->value('value');
+		if ($birthyear_value != $form_birthyear)
+			return true;
+	}
+	else
+		return false;
 }
 
 /**

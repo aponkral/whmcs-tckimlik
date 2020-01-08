@@ -4,9 +4,9 @@
 	*
 	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
 	* English: Turkish Identity Number (TIN) verification module for WHMCS.
-	* Version: 1.2.4 (1.2.4release.1)
-	* BuildId: 20190908.001
-	* Build Date: 08 Sep 2019
+	* Version: 1.2.5 (1.2.5release.1)
+	* BuildId: 20200108.001
+	* Build Date: 08 Jan 2020
 	* Email: bilgi[@]aponkral.net
 	* Website: https://aponkral.net
 	* 
@@ -31,14 +31,16 @@ $verification_status_field = $conf["verification_status_field"];
 $country_check = $conf["only_turkish"];
 $unique_identity = $conf["unique_identity"];
 $verification_status_control = $conf["verification_status_control"];
+$identity_change_protection = $conf["identity_change_protection"];
 $support_ticket_access = $conf["support_ticket_access"];
 $unique_identity_message = $conf["unique_identity_message"];
 $error_message = $conf["error_message"];
 $verification_about = $conf["verification_about"];
 $verification_about_link_name = $conf["verification_about_link_name"];
+$identity_change_protection_message = $conf["identity_change_protection_message"];
 $via_proxy = $conf["via_proxy"];
 
-add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $verification_status_field, $country_check, $unique_identity, $verification_status_control, $unique_identity_message, $error_message, $via_proxy)
+add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthyear_field, $verification_status_field, $country_check, $unique_identity, $verification_status_control, $identity_change_protection, $unique_identity_message, $error_message, $identity_change_protection_message,$via_proxy)
 {
     if ($_SERVER["SCRIPT_NAME"] == '/creditcard.php')
     {
@@ -65,9 +67,12 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
         }
     }
 
+	$user_id = $vars["userid"];
+
     // Get the custom fields from vars
     $form_tckimlik = $vars["customfield"][$tc_field];
     $form_birthyear = $vars["customfield"][$birthyear_field];
+    $form_verification_status = $vars["customfield"][$verification_status_field];
 
     if (($country_check == "on" && $vars["country"] == "TR") || $country_check == "")
     {
@@ -88,7 +93,18 @@ add_hook('ClientDetailsValidation', 1, function ($vars) use ($tc_field, $birthye
             $error[] = "Doğum Yılınız geçerli bir tamsayı değildir.";
             return $error;
         }
-		
+
+// Kimlik Değişiklik Koruması Başladı
+if ($identity_change_protection == "on")
+{
+	if (identity_change_check($user_id, $tc_field, $birthyear_field, $verification_status_field, $form_tckimlik, $vars["firstname"], $vars["lastname"], $form_birthyear))
+	{
+		$error[] = $identity_change_protection_message;
+		return $error;
+	}
+}
+// Kimlik Değişiklik Koruması Bitti
+
 		if($unique_identity == "on")
 		{
 		
@@ -108,8 +124,6 @@ if($check_unique_identity == 0)
 else
 	return false;
 		}
-		
-			$user_id = $vars["userid"];
 
 		if(validate_unique_identity($user_id, $tc_field, $form_tckimlik) == true)
 		{

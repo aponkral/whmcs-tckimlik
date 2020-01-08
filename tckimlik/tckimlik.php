@@ -4,9 +4,9 @@
 	*
 	* Turkish: WHMCS için T.C. Kimlik numarası doğrulama modülü.
 	* English: Turkish Identity Number (TIN) verification module for WHMCS.
-	* Version: 1.2.4 (1.2.4release.1)
-	* BuildId: 20190908.001
-	* Build Date: 08 Sep 2019
+	* Version: 1.2.5 (1.2.5release.1)
+	* BuildId: 20200108.001
+	* Build Date: 08 Jan 2020
 	* Email: bilgi[@]aponkral.net
 	* Website: https://aponkral.net
 	* 
@@ -28,7 +28,7 @@ function tckimlik_config() {
     "name" => "TC Kimlik No Dogrulama",
     "description" => "WHMCS için T.C. Kimlik numarası doğrulama modülü.",
     "premium" => true,
-    "version" => "1.2.4",
+    "version" => "1.2.5",
     "author" => "APONKRAL",
     "link" => "https://aponkral.net/",
     "language" => "turkish",
@@ -69,6 +69,12 @@ function tckimlik_config() {
                 "Size" => "25",
                 "Description" => "T.C. Kimlik doğrulaması yapmayan müşterilere bilgi mesajı gösterir.",
             ],
+            "identity_change_protection" => [
+                "FriendlyName" => "Kimlik Değişiklik Koruması",
+                "Type" => "yesno",
+                "Size" => "25",
+                "Description" => "Doğrulanmış T.C. Kimlik bilgisinin değiştirilmesini engeller.",
+            ],
             "support_ticket_access" => [
                 "FriendlyName" => "Destek Bileti Erişimi",
                 "Type" => "yesno",
@@ -104,6 +110,13 @@ T.C. Kimlik doğrulaması yapmayan müşterilerimiz müşteri panelinde bilgi g�
                 "Size" => 25,
                 "Description" => "T.C. Kimlik Numarasını doğrulamayan müşteriye gösterilecek bilgi yazısındaki bağlantı ismi.",
                 "Default" => "Kullanıcı Bilgilerimi Düzenle",
+            ],
+            "identity_change_protection_message" => [
+                "FriendlyName" => "Kimlik Değişiklik Koruması Mesajı",
+                "Type" => "text",
+                "Size" => 25,
+                "Description" => "Kimlik bilgileri doğrulanmış bir kullanıcı, kimlik bilgilerini değiştirmeye çalıştığında gösterilecek olan mesaj.",
+                "Default" => "Kimlik bilginiz doğrulandığı için değiştirilemez.",
             ],
             "via_proxy" => [
                 "FriendlyName" => "Vekil Sunucu Kullan",
